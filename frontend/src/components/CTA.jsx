@@ -1,14 +1,18 @@
 import { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { EnrollmentForm } from './EnrollmentForm';
-import { getHomeContent } from '../utils/homeStore';
+import { getHomeContent, getHomeContentSync } from '../utils/homeStore';
 
 export const CTA = () => {
   const [showEnrollmentForm, setShowEnrollmentForm] = useState(false);
-  const [content, setContent] = useState(() => getHomeContent().cta);
+  const [content, setContent] = useState(getHomeContentSync().cta);
 
   useEffect(() => {
-    const sync = () => { if (!document.hidden) setContent(getHomeContent().cta); };
+    getHomeContent().then(c => setContent(c.cta));
+  }, []);
+
+  useEffect(() => {
+    const sync = () => { if (!document.hidden) getHomeContent().then(c => setContent(c.cta)); };
     document.addEventListener('visibilitychange', sync);
     return () => document.removeEventListener('visibilitychange', sync);
   }, []);

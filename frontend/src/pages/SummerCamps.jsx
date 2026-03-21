@@ -6,7 +6,7 @@ import {
   Trophy, Users, Rocket, BookOpen, Globe, Award, X
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getPagesContent } from '../utils/pagesStore';
+import { getPagesContent, getPagesContentSync } from '../utils/pagesStore';
 import { TiltCard } from '../components/TiltCard';
 
 // ── Animated stat counter ──
@@ -248,10 +248,14 @@ export const SummerCamps = () => {
   const [selectedCamp, setSelectedCamp] = useState(0);
   const [scrolled, setScrolled] = useState(false);
   const [videoModal, setVideoModal] = useState(null);
-  const [content, setContent] = useState(() => getPagesContent().summerCamps);
+  const [content, setContent] = useState(getPagesContentSync().summerCamps);
 
   useEffect(() => {
-    const sync = () => { if (!document.hidden) setContent(getPagesContent().summerCamps); };
+    getPagesContent().then(p => setContent(p.summerCamps));
+  }, []);
+
+  useEffect(() => {
+    const sync = () => { if (!document.hidden) getPagesContent().then(p => setContent(p.summerCamps)); };
     document.addEventListener('visibilitychange', sync);
     return () => document.removeEventListener('visibilitychange', sync);
   }, []);

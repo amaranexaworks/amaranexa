@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Sparkles, Wrench } from 'lucide-react';
-import { getPagesContent } from '../utils/pagesStore';
+import { getPagesContent, getPagesContentSync } from '../utils/pagesStore';
 
 const CARD_ACCENTS = [
   'from-emerald-400 to-teal-500',
@@ -45,12 +45,16 @@ function matchesGrade(meta, filter) {
 }
 
 export const Courses = () => {
-  const [content, setContent] = useState(() => getPagesContent().courses);
+  const [content, setContent] = useState(getPagesContentSync().courses);
   const [activeGrade, setActiveGrade] = useState('All');
   const [hoveredId, setHoveredId] = useState(null);
 
   useEffect(() => {
-    const sync = () => { if (!document.hidden) setContent(getPagesContent().courses); };
+    getPagesContent().then(p => setContent(p.courses));
+  }, []);
+
+  useEffect(() => {
+    const sync = () => { if (!document.hidden) getPagesContent().then(p => setContent(p.courses)); };
     document.addEventListener('visibilitychange', sync);
     return () => document.removeEventListener('visibilitychange', sync);
   }, []);

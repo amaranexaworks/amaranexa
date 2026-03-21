@@ -1,3 +1,5 @@
+import { fetchNavLinks, createNavLink, updateNavLinkApi, deleteNavLinkApi, reorderNavLinksApi } from './api';
+
 const DEFAULT_NAV_LINKS = [
   { id: 1, label: 'Home', href: '/', enabled: true },
   { id: 2, label: 'Courses', href: '/courses', enabled: true },
@@ -6,46 +8,59 @@ const DEFAULT_NAV_LINKS = [
   { id: 5, label: 'Blog', href: '/blog', enabled: true },
 ];
 
-const STORAGE_KEY = 'codeoffice_nav_links';
+function normalize(link) {
+  return { ...link, enabled: link.enabled === 1 || link.enabled === true };
+}
 
-export function getNavLinks() {
+export async function getNavLinks() {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) return JSON.parse(stored);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_NAV_LINKS));
-    return DEFAULT_NAV_LINKS;
-  } catch {
-    return DEFAULT_NAV_LINKS;
+    const links = await fetchNavLinks();
+    if (Array.isArray(links) && links.length > 0) return links.map(normalize);
+  } catch { /* fall through */ }
+  return DEFAULT_NAV_LINKS;
+}
+
+export async function addNavLink(link) {
+  try {
+    const created = await createNavLink(link);
+    return normalize(created);
+  } catch (err) {
+    console.error('addNavLink error:', err);
+    return null;
   }
 }
 
-export function saveNavLinks(links) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(links));
+export async function updateNavLink(id, data) {
+  try {
+    const updated = await updateNavLinkApi(id, data);
+    return normalize(updated);
+  } catch (err) {
+    console.error('updateNavLink error:', err);
+    return null;
+  }
 }
 
-export function addNavLink(link) {
-  const links = getNavLinks();
-  const newLink = { ...link, id: Date.now(), enabled: true };
-  const updated = [...links, newLink];
-  saveNavLinks(updated);
-  return updated;
+export async function deleteNavLink(id) {
+  try {
+    await deleteNavLinkApi(id);
+    return true;
+  } catch (err) {
+    console.error('deleteNavLink error:', err);
+    return false;
+  }
 }
 
-export function updateNavLink(id, data) {
-  const links = getNavLinks();
-  const updated = links.map(l => l.id === id ? { ...l, ...data } : l);
-  saveNavLinks(updated);
-  return updated;
+export async function reorderNavLinks(links) {
+  try {
+    const updated = await reorderNavLinksApi(links);
+    return Array.isArray(updated) ? updated.map(normalize) : links;
+  } catch (err) {
+    console.error('reorderNavLinks error:', err);
+    return links;
+  }
 }
 
-export function deleteNavLink(id) {
-  const links = getNavLinks();
-  const updated = links.filter(l => l.id !== id);
-  saveNavLinks(updated);
-  return updated;
-}
-
-export function reorderNavLinks(links) {
-  saveNavLinks(links);
-  return links;
+// Sync version for initial render
+export function getNavLinksSync() {
+  return DEFAULT_NAV_LINKS;
 }

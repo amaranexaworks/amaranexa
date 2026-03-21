@@ -1,3 +1,5 @@
+import { fetchPageContent, savePageContent } from './api';
+
 const DEFAULT_PAGES = {
   courses: {
     headline: "OUR",
@@ -66,26 +68,30 @@ const DEFAULT_PAGES = {
   },
 };
 
-const STORAGE_KEY = 'codeoffice_pages_content_v2';
-
-export function getPagesContent() {
+export async function getPagesContent() {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) return JSON.parse(stored);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_PAGES));
-    return DEFAULT_PAGES;
-  } catch {
-    return DEFAULT_PAGES;
+    const content = await fetchPageContent('pages');
+    if (content) return content;
+  } catch { /* fall through */ }
+  return DEFAULT_PAGES;
+}
+
+export async function savePagesContent(content) {
+  try {
+    await savePageContent('pages', content);
+  } catch (err) {
+    console.error('savePagesContent error:', err);
   }
 }
 
-export function savePagesContent(content) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
+export async function updatePage(page, data) {
+  const content = await getPagesContent();
+  const updated = { ...content, [page]: data };
+  await savePagesContent(updated);
+  return updated;
 }
 
-export function updatePage(page, data) {
-  const content = getPagesContent();
-  const updated = { ...content, [page]: data };
-  savePagesContent(updated);
-  return updated;
+// Sync version for initial render
+export function getPagesContentSync() {
+  return DEFAULT_PAGES;
 }

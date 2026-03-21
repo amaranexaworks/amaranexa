@@ -1,9 +1,17 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
+const cors = require('cors');
 const { GoogleGenAI } = require('@google/genai');
 const { testConnection } = require('./src/config/database');
+const { initDatabase } = require('./src/db/init');
 const meetingRoutes = require('./src/routes/meetings');
 const enrollmentRoutes = require('./src/routes/enrollments');
+const authRoutes = require('./src/routes/auth');
+const blogRoutes = require('./src/routes/blog');
+const contentRoutes = require('./src/routes/content');
+const navlinkRoutes = require('./src/routes/navlinks');
+const mediaRoutes = require('./src/routes/media');
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
@@ -28,20 +36,26 @@ Answer questions in a warm, helpful, and concise manner. If you don't know a spe
 const app = express();
 const PORT = process.env.BACKEND_PORT || 5000;
 
-// Allow frontend (Vite dev server) to call the API
-app.use((_req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (_req.method === 'OPTIONS') return res.sendStatus(204);
-  next();
-});
+// CORS
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+
+// Serve uploaded files statically
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/meetings', meetingRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
+app.use('/api/blog', blogRoutes);
+app.use('/api/content', contentRoutes);
+app.use('/api/navlinks', navlinkRoutes);
+app.use('/api/media', mediaRoutes);
 
 // AI Chat endpoint
 app.post('/api/chat', async (req, res) => {
@@ -86,5 +100,8 @@ app.get('/test-connection', async (req, res) => {
 
 app.listen(PORT, async () => {
   console.log(`Server running on port ${PORT}`);
-  await testConnection();
+  const connected = await testConnection();
+  if (connected) {
+    await initDatabase();
+  }
 });

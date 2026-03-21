@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Terminal, Menu, X, Zap } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import { getNavLinks } from '../utils/navStore';
+import { getNavLinks, getNavLinksSync } from '../utils/navStore';
 import { EnrollmentForm } from './EnrollmentForm';
 
 export const Navbar = () => {
@@ -13,12 +13,12 @@ export const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    setNavLinks(getNavLinks().filter(l => l.enabled));
+    getNavLinks().then(links => setNavLinks(links.filter(l => l.enabled)));
   }, []);
 
   useEffect(() => {
     const handleVisibility = () => {
-      if (!document.hidden) setNavLinks(getNavLinks().filter(l => l.enabled));
+      if (!document.hidden) getNavLinks().then(links => setNavLinks(links.filter(l => l.enabled)));
     };
     document.addEventListener('visibilitychange', handleVisibility);
     return () => document.removeEventListener('visibilitychange', handleVisibility);

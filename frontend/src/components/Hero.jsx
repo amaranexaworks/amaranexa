@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Cpu, Sparkles, BrainCircuit, Quote, X, Star, Trophy, Zap, Play } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { getHomeContent } from '../utils/homeStore';
+import { getHomeContent, getHomeContentSync } from '../utils/homeStore';
 
 const FALLBACK_GRADIENTS = [
   'from-brand-primary/30 to-brand-secondary/20',
@@ -284,10 +284,14 @@ function VideoCard({ src, index = 0 }) {
 // ── Hero ────────────────────────────────────────────────────────────────────
 export const Hero = () => {
   const navigate = useNavigate();
-  const [content, setContent] = useState(() => getHomeContent());
+  const [content, setContent] = useState(getHomeContentSync());
 
   useEffect(() => {
-    const sync = () => { if (!document.hidden) setContent(getHomeContent()); };
+    getHomeContent().then(c => setContent(c));
+  }, []);
+
+  useEffect(() => {
+    const sync = () => { if (!document.hidden) getHomeContent().then(c => setContent(c)); };
     document.addEventListener('visibilitychange', sync);
     return () => document.removeEventListener('visibilitychange', sync);
   }, []);
@@ -423,11 +427,15 @@ export const PartnerSchools = () => (
 
 // ── StudentGallery ───────────────────────────────────────────────────────────
 export const StudentGallery = () => {
-  const [content, setContent] = useState(() => getHomeContent());
+  const [content, setContent] = useState(getHomeContentSync());
   const [activeStudent, setActiveStudent] = useState(null);
 
   useEffect(() => {
-    const sync = () => { if (!document.hidden) setContent(getHomeContent()); };
+    getHomeContent().then(c => setContent(c));
+  }, []);
+
+  useEffect(() => {
+    const sync = () => { if (!document.hidden) getHomeContent().then(c => setContent(c)); };
     document.addEventListener('visibilitychange', sync);
     return () => document.removeEventListener('visibilitychange', sync);
   }, []);
@@ -556,10 +564,14 @@ export const StudentGallery = () => {
 
 // ── LifeAtAmara ──────────────────────────────────────────────────────────────
 export const LifeAtAmara = () => {
-  const [content, setContent] = useState(() => getHomeContent());
+  const [content, setContent] = useState(getHomeContentSync());
 
   useEffect(() => {
-    const sync = () => { if (!document.hidden) setContent(getHomeContent()); };
+    getHomeContent().then(c => setContent(c));
+  }, []);
+
+  useEffect(() => {
+    const sync = () => { if (!document.hidden) getHomeContent().then(c => setContent(c)); };
     document.addEventListener('visibilitychange', sync);
     return () => document.removeEventListener('visibilitychange', sync);
   }, []);
@@ -714,11 +726,15 @@ function TestimonialModal({ t, onClose }) {
 
 // ── HeroTestimonials ─────────────────────────────────────────────────────────
 export const HeroTestimonials = () => {
-  const [content, setContent] = useState(() => getHomeContent());
+  const [content, setContent] = useState(getHomeContentSync());
   const [active, setActive] = useState(null);
 
   useEffect(() => {
-    const sync = () => { if (!document.hidden) setContent(getHomeContent()); };
+    getHomeContent().then(c => setContent(c));
+  }, []);
+
+  useEffect(() => {
+    const sync = () => { if (!document.hidden) getHomeContent().then(c => setContent(c)); };
     document.addEventListener('visibilitychange', sync);
     return () => document.removeEventListener('visibilitychange', sync);
   }, []);

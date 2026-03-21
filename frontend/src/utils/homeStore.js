@@ -1,3 +1,5 @@
+import { fetchPageContent, savePageContent } from './api';
+
 const DEFAULT_HOME_CONTENT = {
   hero: {
     badge: "The Future of Education",
@@ -56,24 +58,9 @@ const DEFAULT_HOME_CONTENT = {
   gallery: {
     mainImage: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80',
     cards: [
-      {
-        image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=800&q=80',
-        tag: 'Web Development',
-        caption: 'From Zero to Live Website',
-        sub: 'Students ship their first portfolio in just 4 weeks',
-      },
-      {
-        image: 'https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&w=800&q=80',
-        tag: 'AI & Python',
-        caption: 'Coding the Future of AI',
-        sub: 'Training real models with Python & TensorFlow',
-      },
-      {
-        image: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&w=800&q=80',
-        tag: 'Collaborative Learning',
-        caption: 'Teamwork Makes the Dream Work',
-        sub: 'Students pair-program, review code, and grow together',
-      },
+      { image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=800&q=80', tag: 'Web Development', caption: 'From Zero to Live Website', sub: 'Students ship their first portfolio in just 4 weeks' },
+      { image: 'https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&w=800&q=80', tag: 'AI & Python', caption: 'Coding the Future of AI', sub: 'Training real models with Python & TensorFlow' },
+      { image: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&w=800&q=80', tag: 'Collaborative Learning', caption: 'Teamwork Makes the Dream Work', sub: 'Students pair-program, review code, and grow together' },
     ],
   },
   cta: {
@@ -85,26 +72,30 @@ const DEFAULT_HOME_CONTENT = {
   },
 };
 
-const STORAGE_KEY = 'amaranexa_home_content_v3';
-
-export function getHomeContent() {
+export async function getHomeContent() {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) return JSON.parse(stored);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_HOME_CONTENT));
-    return DEFAULT_HOME_CONTENT;
-  } catch {
-    return DEFAULT_HOME_CONTENT;
+    const content = await fetchPageContent('home');
+    if (content) return content;
+  } catch { /* fall through */ }
+  return DEFAULT_HOME_CONTENT;
+}
+
+export async function saveHomeContent(content) {
+  try {
+    await savePageContent('home', content);
+  } catch (err) {
+    console.error('saveHomeContent error:', err);
   }
 }
 
-export function saveHomeContent(content) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
+export async function updateHomeSection(section, data) {
+  const content = await getHomeContent();
+  const updated = { ...content, [section]: data };
+  await saveHomeContent(updated);
+  return updated;
 }
 
-export function updateHomeSection(section, data) {
-  const content = getHomeContent();
-  const updated = { ...content, [section]: data };
-  saveHomeContent(updated);
-  return updated;
+// Sync version for initial render
+export function getHomeContentSync() {
+  return DEFAULT_HOME_CONTENT;
 }

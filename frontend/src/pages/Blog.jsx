@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Search, ChevronDown, MoreVertical, MessageSquare, Heart } from 'lucide-react';
-import { getPosts } from '../utils/blogStore';
+import { getPosts, getPostsSync } from '../utils/blogStore';
 
 const CATEGORIES = [
   "All Posts",
@@ -29,13 +29,13 @@ export const Blog = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    setPosts(getPosts());
+    getPosts().then(setPosts);
   }, []);
 
   // Re-sync when tab becomes visible (admin may have edited posts)
   useEffect(() => {
     const handleVisibility = () => {
-      if (!document.hidden) setPosts(getPosts());
+      if (!document.hidden) getPosts().then(setPosts);
     };
     document.addEventListener('visibilitychange', handleVisibility);
     return () => document.removeEventListener('visibilitychange', handleVisibility);

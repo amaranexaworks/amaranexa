@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Trophy, Laptop, Rocket, Sparkles, Star, Gift } from 'lucide-react';
-import { getHomeContent } from '../utils/homeStore';
+import { getHomeContent, getHomeContentSync } from '../utils/homeStore';
 
 const PERK_CONFIG = [
   {
@@ -31,10 +31,14 @@ const PERK_CONFIG = [
 ];
 
 export const Perks = () => {
-  const [content, setContent] = useState(() => getHomeContent().perks);
+  const [content, setContent] = useState(getHomeContentSync().perks);
 
   useEffect(() => {
-    const sync = () => { if (!document.hidden) setContent(getHomeContent().perks); };
+    getHomeContent().then(c => setContent(c.perks));
+  }, []);
+
+  useEffect(() => {
+    const sync = () => { if (!document.hidden) getHomeContent().then(c => setContent(c.perks)); };
     document.addEventListener('visibilitychange', sync);
     return () => document.removeEventListener('visibilitychange', sync);
   }, []);

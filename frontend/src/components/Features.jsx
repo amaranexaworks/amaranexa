@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Building2, Laptop, Cpu, Briefcase } from 'lucide-react';
 import { motion } from 'motion/react';
-import { getHomeContent } from '../utils/homeStore';
+import { getHomeContent, getHomeContentSync } from '../utils/homeStore';
 
 const ICONS = [Building2, Laptop, Cpu, Briefcase];
 const COLORS = [
@@ -19,10 +19,14 @@ const LAB_IMAGES = [
 ];
 
 export const Features = () => {
-  const [content, setContent] = useState(() => getHomeContent().features);
+  const [content, setContent] = useState(getHomeContentSync().features);
 
   useEffect(() => {
-    const sync = () => { if (!document.hidden) setContent(getHomeContent().features); };
+    getHomeContent().then(c => setContent(c.features));
+  }, []);
+
+  useEffect(() => {
+    const sync = () => { if (!document.hidden) getHomeContent().then(c => setContent(c.features)); };
     document.addEventListener('visibilitychange', sync);
     return () => document.removeEventListener('visibilitychange', sync);
   }, []);

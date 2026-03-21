@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ArrowUpRight, ChevronLeft, ChevronDown, Terminal } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { MeetingForm } from '../components/MeetingForm';
-import { getPagesContent } from '../utils/pagesStore';
+import { getPagesContent, getPagesContentSync } from '../utils/pagesStore';
 
 const SERVICES_DROPDOWN = [
   { label: 'National Competitions', desc: 'Inter-school tech fests & robotics challenges' },
@@ -15,7 +15,11 @@ export const Schools = () => {
   const [showMeetingForm, setShowMeetingForm] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const servicesRef = useRef(null);
-  const [content, setContent] = useState(() => getPagesContent().schools);
+  const [content, setContent] = useState(getPagesContentSync().schools);
+
+  useEffect(() => {
+    getPagesContent().then(p => setContent(p.schools));
+  }, []);
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -28,7 +32,7 @@ export const Schools = () => {
   }, []);
 
   useEffect(() => {
-    const sync = () => { if (!document.hidden) setContent(getPagesContent().schools); };
+    const sync = () => { if (!document.hidden) getPagesContent().then(p => setContent(p.schools)); };
     document.addEventListener('visibilitychange', sync);
     return () => document.removeEventListener('visibilitychange', sync);
   }, []);
