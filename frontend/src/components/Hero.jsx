@@ -1,9 +1,18 @@
 import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, Cpu, Sparkles, BrainCircuit, Quote, X, Star, Trophy, Zap, Play } from 'lucide-react';
+import { ArrowRight, Cpu, Sparkles, BrainCircuit, Quote, X, Star, Trophy, Zap, Play, Code, Bot, Monitor, Gamepad2, Lightbulb, Rocket } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getHomeContent, getHomeContentSync } from '../utils/homeStore';
+
+const LAB_CARDS = [
+  { title: 'Coding Lab', desc: 'Students writing real code', gradient: 'from-blue-500 to-indigo-600', icon: <Code size={36} className="text-white" /> },
+  { title: 'Robotics', desc: 'Building & programming robots', gradient: 'from-emerald-500 to-teal-600', icon: <Bot size={36} className="text-white" /> },
+  { title: 'AI Projects', desc: 'Training neural networks', gradient: 'from-violet-500 to-purple-600', icon: <BrainCircuit size={36} className="text-white" /> },
+  { title: 'Game Dev', desc: 'Creating interactive games', gradient: 'from-orange-500 to-red-500', icon: <Gamepad2 size={36} className="text-white" /> },
+  { title: 'Innovation', desc: 'Solving real-world problems', gradient: 'from-amber-500 to-yellow-600', icon: <Lightbulb size={36} className="text-white" /> },
+  { title: 'Tech Office', desc: 'Professional lab setup', gradient: 'from-cyan-500 to-blue-600', icon: <Monitor size={36} className="text-white" /> },
+];
 
 const FALLBACK_GRADIENTS = [
   'from-brand-primary/30 to-brand-secondary/20',
@@ -300,11 +309,8 @@ export const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex flex-col items-center px-8 py-20 overflow-hidden bg-aurora bg-dot-grid">
-      {/* Video Background */}
-      <div className="absolute inset-0 z-0">
-        <video autoPlay muted loop playsInline preload="none" src={hero.videoUrl} className="w-full h-full object-cover opacity-20" />
-        <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px]" />
-      </div>
+      {/* Background overlay */}
+      <div className="absolute inset-0 z-0 bg-white/60" />
 
       {/* Animated circuit dot grid overlay */}
       <div className="absolute inset-0 z-0 opacity-[0.03]"
@@ -619,7 +625,7 @@ export const LifeAtAmara = () => {
         </motion.div>
       </div>
 
-      {/* Scrolling video strip */}
+      {/* Scrolling image strip */}
       <div className="relative">
         {/* Edge fades */}
         <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
@@ -627,12 +633,20 @@ export const LifeAtAmara = () => {
 
         <div className="relative flex overflow-hidden">
           <motion.div
-            animate={{ x: [0, -(336 * lifeSection.videos.length)] }}
-            transition={{ duration: lifeSection.videos.length * 5, repeat: Infinity, ease: 'linear' }}
+            animate={{ x: [0, -(336 * LAB_CARDS.length)] }}
+            transition={{ duration: LAB_CARDS.length * 5, repeat: Infinity, ease: 'linear' }}
             className="flex gap-6 px-4"
           >
-            {[...lifeSection.videos, ...lifeSection.videos].map((src, i) => (
-              <VideoCard key={i} src={src} index={i % lifeSection.videos.length} />
+            {[...LAB_CARDS, ...LAB_CARDS].map((card, i) => (
+              <div key={i} className={`min-w-[320px] aspect-[3/4] rounded-[2.5rem] overflow-hidden card-shadow relative shrink-0 bg-gradient-to-br ${card.gradient}`}>
+                <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
+                  <div className="w-20 h-20 rounded-3xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-6">
+                    {card.icon}
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2">{card.title}</h3>
+                  <p className="text-white/80 text-sm">{card.desc}</p>
+                </div>
+              </div>
             ))}
           </motion.div>
         </div>

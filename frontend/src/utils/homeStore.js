@@ -11,7 +11,7 @@ const DEFAULT_HOME_CONTENT = {
     cta2: "Explore Labs",
     studentCount: "5,000+",
     studentDesc: "Building AI Agents daily",
-    videoUrl: "https://assets.mixkit.co/videos/48165/48165-720.mp4",
+    videoUrl: "",
     stat1Label: "AI Accuracy",
     stat1Value: "99.8%",
     stat2Label: "Lab Uptime",
@@ -19,14 +19,7 @@ const DEFAULT_HOME_CONTENT = {
   },
   lifeSection: {
     title: "Life at Amara Nexa",
-    videos: [
-      "https://assets.mixkit.co/videos/1728/1728-1080.mp4",
-      "https://assets.mixkit.co/videos/47257/47257-720.mp4",
-      "https://assets.mixkit.co/videos/46635/46635-720.mp4",
-      "https://assets.mixkit.co/videos/49042/49042-720.mp4",
-      "https://assets.mixkit.co/videos/47266/47266-720.mp4",
-      "https://assets.mixkit.co/videos/48165/48165-720.mp4",
-    ],
+    videos: [],
   },
   testimonials: {
     title: "What Parents Say About Us",
