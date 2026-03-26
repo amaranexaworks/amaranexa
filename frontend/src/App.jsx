@@ -58,6 +58,7 @@ function ScrollProgressBar() {
   );
 }
 import { Navbar } from './components/Navbar';
+import LaunchCover from './components/LaunchBanner';
 import { ChatWidget } from './components/ChatWidget';
 import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
@@ -107,34 +108,36 @@ const AppContent = () => {
   const hideNavFooter = isAdmin || isSummerCamp || isSchools;
 
   return (
-    <div className="min-h-screen bg-white font-sans text-zinc-900 selection:bg-brand-primary selection:text-white">
-      <CursorGlow />
-      <ScrollProgressBar />
-      {!hideNavFooter && <Navbar />}
-      <main>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={location.pathname}
-            initial={{ opacity: 0, y: 18, filter: 'blur(4px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, y: -12, filter: 'blur(2px)' }}
-            transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-          >
-            <Routes location={location}>
-              <Route path="/" element={<Home />} />
-              <Route path="/courses" element={<Courses />} />
-              <Route path="/schools" element={<Schools />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/summer-camps" element={<SummerCamps />} />
-              <Route path="/admin" element={<Admin />} />
-            </Routes>
-          </motion.div>
-        </AnimatePresence>
-      </main>
-      {!hideNavFooter && <Footer />}
-      <WhatsAppButton />
-      <ChatWidget />
-    </div>
+    <LaunchCover>
+      <div className="min-h-screen bg-white font-sans text-zinc-900 selection:bg-brand-primary selection:text-white">
+        <CursorGlow />
+        <ScrollProgressBar />
+        {!hideNavFooter && <Navbar />}
+        <main>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0, y: 18, filter: 'blur(4px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, y: -12, filter: 'blur(2px)' }}
+              transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
+              <Routes location={location}>
+                <Route path="/" element={<Home />} />
+                <Route path="/courses" element={<Courses />} />
+                <Route path="/schools" element={<Schools />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/summer-camps" element={<SummerCamps />} />
+                <Route path="/admin" element={<Admin />} />
+              </Routes>
+            </motion.div>
+          </AnimatePresence>
+        </main>
+        {!hideNavFooter && <Footer />}
+        <WhatsAppButton />
+        <ChatWidget />
+      </div>
+    </LaunchCover>
   );
 };
 
