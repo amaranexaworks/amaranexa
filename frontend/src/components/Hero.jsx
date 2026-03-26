@@ -275,7 +275,7 @@ function VideoCard({ src, index = 0 }) {
           </div>
         </div>
       ) : (
-        <video autoPlay muted loop playsInline preload="none" src={src} className="w-full h-full object-cover" onError={() => setFailed(true)} />
+        <video autoPlay muted loop playsInline preload="auto" src={src} className="w-full h-full object-cover" onError={() => setFailed(true)} />
       )}
     </div>
   );
