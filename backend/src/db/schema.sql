@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS meeting_bookings (
 CREATE TABLE IF NOT EXISTS enrollments (
   id INT AUTO_INCREMENT PRIMARY KEY,
   child_name VARCHAR(100) NOT NULL,
-  parent_contact VARCHAR(20) NOT NULL,
-  email VARCHAR(150) NOT NULL,
+  parent_contact VARCHAR(50) NOT NULL,
+  email VARCHAR(150) DEFAULT '',
   child_grade VARCHAR(20) NOT NULL,
   child_school VARCHAR(200) NOT NULL,
   interested_in VARCHAR(100),
