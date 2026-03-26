@@ -104,4 +104,10 @@ app.listen(PORT, async () => {
   if (connected) {
     await initDatabase();
   }
+
+  // Self-ping every 14 minutes to prevent Render free tier from sleeping
+  // Also keeps Supabase connection alive
+  setInterval(() => {
+    fetch(`http://localhost:${PORT}/health`).catch(() => {});
+  }, 14 * 60 * 1000);
 });
