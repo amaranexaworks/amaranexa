@@ -11,7 +11,7 @@ const DEFAULT_HOME_CONTENT = {
     cta2: "Explore Labs",
     studentCount: "5,000+",
     studentDesc: "Building AI Agents daily",
-    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-children-learning-in-a-classroom-4240-large.mp4",
+    videoUrl: "https://assets.mixkit.co/videos/48165/48165-720.mp4",
     stat1Label: "AI Accuracy",
     stat1Value: "99.8%",
     stat2Label: "Lab Uptime",
@@ -20,12 +20,12 @@ const DEFAULT_HOME_CONTENT = {
   lifeSection: {
     title: "Life at Amara Nexa",
     videos: [
-      "https://assets.mixkit.co/videos/preview/mixkit-children-learning-in-a-classroom-4240-large.mp4",
-      "https://assets.mixkit.co/videos/preview/mixkit-little-girl-working-on-a-laptop-at-home-4241-large.mp4",
-      "https://assets.mixkit.co/videos/preview/mixkit-boy-studying-with-a-laptop-at-home-4242-large.mp4",
-      "https://assets.mixkit.co/videos/preview/mixkit-children-in-a-classroom-4244-large.mp4",
-      "https://assets.mixkit.co/videos/preview/mixkit-student-working-on-a-laptop-in-a-library-4245-large.mp4",
-      "https://assets.mixkit.co/videos/preview/mixkit-young-student-working-on-a-laptop-in-a-library-4246-large.mp4",
+      "https://assets.mixkit.co/videos/1728/1728-1080.mp4",
+      "https://assets.mixkit.co/videos/47257/47257-720.mp4",
+      "https://assets.mixkit.co/videos/46635/46635-720.mp4",
+      "https://assets.mixkit.co/videos/49042/49042-720.mp4",
+      "https://assets.mixkit.co/videos/47266/47266-720.mp4",
+      "https://assets.mixkit.co/videos/48165/48165-720.mp4",
     ],
   },
   testimonials: {
