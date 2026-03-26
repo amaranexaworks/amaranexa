@@ -7,7 +7,7 @@ const router = express.Router();
 // GET /api/content/:pageKey — public: get page content
 router.get('/:pageKey', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT * FROM page_content WHERE page_key = ?', [req.params.pageKey]);
+    const { rows } = await pool.query('SELECT * FROM page_content WHERE page_key = $1', [req.params.pageKey]);
     if (rows.length === 0) return res.json({ page_key: req.params.pageKey, content: null });
     res.json(rows[0]);
   } catch (err) {
@@ -23,8 +23,8 @@ router.put('/:pageKey', authMiddleware, async (req, res) => {
     if (!content) return res.status(400).json({ error: 'Content required' });
 
     await pool.query(
-      `INSERT INTO page_content (page_key, content) VALUES (?, ?)
-       ON DUPLICATE KEY UPDATE content = VALUES(content)`,
+      `INSERT INTO page_content (page_key, content) VALUES ($1, $2)
+       ON CONFLICT (page_key) DO UPDATE SET content = $2, updated_at = CURRENT_TIMESTAMP`,
       [req.params.pageKey, JSON.stringify(content)]
     );
     res.json({ success: true, page_key: req.params.pageKey });

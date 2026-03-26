@@ -7,7 +7,7 @@ const router = express.Router();
 // GET /api/navlinks — public: get all nav links
 router.get('/', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT * FROM nav_links ORDER BY sort_order ASC');
+    const { rows } = await pool.query('SELECT * FROM nav_links ORDER BY sort_order ASC');
     res.json(rows);
   } catch (err) {
     console.error('Nav fetch error:', err.message);
@@ -21,12 +21,11 @@ router.post('/', authMiddleware, async (req, res) => {
     const { label, href, enabled = true } = req.body;
     if (!label || !href) return res.status(400).json({ error: 'Label and href required' });
 
-    const [maxOrder] = await pool.query('SELECT COALESCE(MAX(sort_order), 0) as max_order FROM nav_links');
-    const [result] = await pool.query(
-      'INSERT INTO nav_links (label, href, enabled, sort_order) VALUES (?, ?, ?, ?)',
-      [label, href, enabled ? 1 : 0, maxOrder[0].max_order + 1]
+    const maxOrder = await pool.query('SELECT COALESCE(MAX(sort_order), 0) as max_order FROM nav_links');
+    const { rows } = await pool.query(
+      'INSERT INTO nav_links (label, href, enabled, sort_order) VALUES ($1, $2, $3, $4) RETURNING *',
+      [label, href, enabled, maxOrder.rows[0].max_order + 1]
     );
-    const [rows] = await pool.query('SELECT * FROM nav_links WHERE id = ?', [result.insertId]);
     res.status(201).json(rows[0]);
   } catch (err) {
     console.error('Nav create error:', err.message);
@@ -38,11 +37,10 @@ router.post('/', authMiddleware, async (req, res) => {
 router.put('/:id', authMiddleware, async (req, res) => {
   try {
     const { label, href, enabled } = req.body;
-    await pool.query(
-      'UPDATE nav_links SET label=?, href=?, enabled=? WHERE id=?',
-      [label, href, enabled ? 1 : 0, req.params.id]
+    const { rows } = await pool.query(
+      'UPDATE nav_links SET label=$1, href=$2, enabled=$3 WHERE id=$4 RETURNING *',
+      [label, href, enabled, req.params.id]
     );
-    const [rows] = await pool.query('SELECT * FROM nav_links WHERE id = ?', [req.params.id]);
     if (rows.length === 0) return res.status(404).json({ error: 'Link not found' });
     res.json(rows[0]);
   } catch (err) {
@@ -58,9 +56,9 @@ router.put('/reorder/all', authMiddleware, async (req, res) => {
     if (!Array.isArray(links)) return res.status(400).json({ error: 'Links array required' });
 
     for (let i = 0; i < links.length; i++) {
-      await pool.query('UPDATE nav_links SET sort_order = ? WHERE id = ?', [i, links[i].id]);
+      await pool.query('UPDATE nav_links SET sort_order = $1 WHERE id = $2', [i, links[i].id]);
     }
-    const [rows] = await pool.query('SELECT * FROM nav_links ORDER BY sort_order ASC');
+    const { rows } = await pool.query('SELECT * FROM nav_links ORDER BY sort_order ASC');
     res.json(rows);
   } catch (err) {
     console.error('Nav reorder error:', err.message);
@@ -71,8 +69,8 @@ router.put('/reorder/all', authMiddleware, async (req, res) => {
 // DELETE /api/navlinks/:id — admin: delete nav link
 router.delete('/:id', authMiddleware, async (req, res) => {
   try {
-    const [result] = await pool.query('DELETE FROM nav_links WHERE id = ?', [req.params.id]);
-    if (result.affectedRows === 0) return res.status(404).json({ error: 'Link not found' });
+    const result = await pool.query('DELETE FROM nav_links WHERE id = $1', [req.params.id]);
+    if (result.rowCount === 0) return res.status(404).json({ error: 'Link not found' });
     res.json({ success: true });
   } catch (err) {
     console.error('Nav delete error:', err.message);

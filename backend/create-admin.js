@@ -22,12 +22,12 @@ async function createAdmin() {
   try {
     const hash = await bcrypt.hash(password, 10);
     await pool.query(
-      'INSERT INTO admin_users (username, password_hash, role) VALUES (?, ?, ?)',
+      'INSERT INTO admin_users (username, password_hash, role) VALUES ($1, $2, $3)',
       [username, hash, 'admin']
     );
     console.log(`Admin user "${username}" created successfully.`);
   } catch (err) {
-    if (err.code === 'ER_DUP_ENTRY') {
+    if (err.code === '23505') {
       console.error(`Username "${username}" already exists.`);
     } else {
       console.error('Error:', err.message);

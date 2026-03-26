@@ -41,10 +41,10 @@ router.get('/', async (req, res) => {
     let query = 'SELECT * FROM media ORDER BY created_at DESC';
     let params = [];
     if (category) {
-      query = 'SELECT * FROM media WHERE category = ? ORDER BY created_at DESC';
+      query = 'SELECT * FROM media WHERE category = $1 ORDER BY created_at DESC';
       params = [category];
     }
-    const [rows] = await pool.query(query, params);
+    const { rows } = await pool.query(query, params);
     res.json(rows);
   } catch (err) {
     console.error('Media fetch error:', err.message);
@@ -65,13 +65,13 @@ router.post('/upload', authMiddleware, upload.array('files', 20), async (req, re
       const category = isVideo ? 'video' : 'photo';
       const url = `/uploads/${file.filename}`;
 
-      const [result] = await pool.query(
-        'INSERT INTO media (filename, original_name, mime_type, size, url, category, alt_text) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      const { rows } = await pool.query(
+        'INSERT INTO media (filename, original_name, mime_type, size, url, category, alt_text) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id',
         [file.filename, file.originalname, file.mimetype, file.size, url, category, req.body.alt_text || '']
       );
 
       results.push({
-        id: result.insertId,
+        id: rows[0].id,
         filename: file.filename,
         original_name: file.originalname,
         mime_type: file.mimetype,
@@ -91,14 +91,14 @@ router.post('/upload', authMiddleware, upload.array('files', 20), async (req, re
 // DELETE /api/media/:id — admin: delete media
 router.delete('/:id', authMiddleware, async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT * FROM media WHERE id = ?', [req.params.id]);
+    const { rows } = await pool.query('SELECT * FROM media WHERE id = $1', [req.params.id]);
     if (rows.length === 0) return res.status(404).json({ error: 'Media not found' });
 
     // Delete file from disk
     const filePath = path.join(UPLOAD_DIR, rows[0].filename);
     if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
 
-    await pool.query('DELETE FROM media WHERE id = ?', [req.params.id]);
+    await pool.query('DELETE FROM media WHERE id = $1', [req.params.id]);
     res.json({ success: true });
   } catch (err) {
     console.error('Media delete error:', err.message);
