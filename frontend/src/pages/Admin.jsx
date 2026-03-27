@@ -680,15 +680,15 @@ function MediaGallerySection() {
 }
 
 // ── Shared Editor Primitives ──────────────────────────────────────────────────
-function Field({ label, value, onChange, type = 'input', placeholder = '' }) {
+function Field({ label, value, onChange, type = 'input', multiline = false, placeholder = '' }) {
   return (
     <div>
       <label className="block text-sm font-semibold text-zinc-700 mb-1.5">{label}</label>
-      {type === 'textarea' ? (
+      {(type === 'textarea' || multiline) ? (
         <textarea value={value ?? ''} onChange={e => onChange(e.target.value)} placeholder={placeholder} rows={3}
           className="w-full px-4 py-2.5 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-black/10 resize-none" />
       ) : (
-        <input type="text" value={value ?? ''} onChange={e => onChange(e.target.value)} placeholder={placeholder}
+        <input type={type === 'number' ? 'number' : 'text'} value={value ?? ''} onChange={e => onChange(e.target.value)} placeholder={placeholder}
           className="w-full px-4 py-2.5 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-black/10" />
       )}
     </div>
@@ -713,11 +713,27 @@ function SaveBtn({ onClick }) {
   );
 }
 
-function EditorCard({ title, children }) {
+function EditorCard({ title, children, onDelete }) {
   return (
     <div className="bg-white rounded-[2rem] border border-zinc-200 p-8 space-y-5">
-      <h3 className="font-bold text-sm uppercase tracking-widest text-zinc-400">{title}</h3>
+      <div className="flex items-center justify-between">
+        <h3 className="font-bold text-sm uppercase tracking-widest text-zinc-400">{title}</h3>
+        {onDelete && (
+          <button onClick={onDelete} className="text-red-400 hover:text-red-600 transition-colors p-1 rounded-lg hover:bg-red-50">
+            <Trash2 size={15} />
+          </button>
+        )}
+      </div>
       {children}
+    </div>
+  );
+}
+
+function SectionHeader({ title, desc }) {
+  return (
+    <div className="mb-2">
+      <h2 className="text-xl font-bold">{title}</h2>
+      {desc && <p className="text-zinc-500 text-sm mt-1">{desc}</p>}
     </div>
   );
 }
