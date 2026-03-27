@@ -978,6 +978,194 @@ function GalleryEditor({ data, onSave }) {
   );
 }
 
+// ── Stats Editor ─────────────────────────────────────────────────────────────
+function StatsEditor({ data, onSave }) {
+  const defaults = [
+    { value: 5000, suffix: '+', label: 'Students Enrolled', color: 'text-brand-primary' },
+    { value: 54, suffix: '+', label: 'Partner Schools', color: 'text-violet-500' },
+    { value: 9, suffix: '', label: 'Courses Available', color: 'text-amber-500' },
+    { value: 100, suffix: '%', label: 'Lab Uptime', color: 'text-emerald-500' },
+  ];
+  const [stats, setStats] = useState(data || defaults);
+  const update = (i, key, val) => { const s = [...stats]; s[i] = { ...s[i], [key]: val }; setStats(s); };
+  return (
+    <div className="space-y-4">
+      <SectionHeader title="Homepage Stats" desc="Edit the counter numbers shown on the homepage" />
+      {stats.map((s, i) => (
+        <EditorCard key={i} title={`Stat ${i + 1}`}>
+          <div className="grid grid-cols-3 gap-4">
+            <Field label="Value" type="number" value={s.value} onChange={v => update(i, 'value', parseInt(v) || 0)} />
+            <Field label="Suffix" value={s.suffix} onChange={v => update(i, 'suffix', v)} placeholder="+ or %" />
+            <Field label="Label" value={s.label} onChange={v => update(i, 'label', v)} />
+          </div>
+        </EditorCard>
+      ))}
+      <div className="flex justify-end"><SaveBtn onClick={() => onSave(stats)} /></div>
+    </div>
+  );
+}
+
+// ── Partner Schools Editor ───────────────────────────────────────────────────
+function PartnerSchoolsEditor({ data, onSave }) {
+  const [schools, setSchools] = useState(data || []);
+  const update = (i, key, val) => { const s = [...schools]; s[i] = { ...s[i], [key]: val }; setSchools(s); };
+  const add = () => setSchools([...schools, { name: '', city: '' }]);
+  const remove = (i) => setSchools(schools.filter((_, j) => j !== i));
+  return (
+    <div className="space-y-4">
+      <SectionHeader title="Partner Schools" desc="Schools shown in the scrolling marquee" />
+      {schools.map((s, i) => (
+        <EditorCard key={i} title={s.name || `School ${i + 1}`} onDelete={() => remove(i)}>
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="School Name" value={s.name} onChange={v => update(i, 'name', v)} />
+            <Field label="City" value={s.city} onChange={v => update(i, 'city', v)} />
+          </div>
+        </EditorCard>
+      ))}
+      <button onClick={add} className="w-full py-3 border-2 border-dashed border-zinc-300 rounded-xl text-zinc-500 font-semibold hover:border-zinc-400 hover:text-zinc-700 transition-colors">+ Add School</button>
+      <div className="flex justify-end"><SaveBtn onClick={() => onSave(schools)} /></div>
+    </div>
+  );
+}
+
+// ── Mentors Editor ───────────────────────────────────────────────────────────
+function MentorsEditor({ data, onSave }) {
+  const [mentors, setMentors] = useState(data || []);
+  const update = (i, key, val) => { const s = [...mentors]; s[i] = { ...s[i], [key]: val }; setMentors(s); };
+  const add = () => setMentors([...mentors, { name: '', role: '', exp: '', avatar: '', tags: [] }]);
+  const remove = (i) => setMentors(mentors.filter((_, j) => j !== i));
+  return (
+    <div className="space-y-4">
+      <SectionHeader title="Mentors" desc="Team members shown in Meet the Mentors section" />
+      {mentors.map((m, i) => (
+        <EditorCard key={i} title={m.name || `Mentor ${i + 1}`} onDelete={() => remove(i)}>
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Name" value={m.name} onChange={v => update(i, 'name', v)} />
+            <Field label="Role" value={m.role} onChange={v => update(i, 'role', v)} />
+            <Field label="Experience" value={m.exp} onChange={v => update(i, 'exp', v)} placeholder="6 years at Google" />
+            <Field label="Avatar URL" value={m.avatar} onChange={v => update(i, 'avatar', v)} />
+          </div>
+          <Field label="Tags (comma-separated)" value={(m.tags || []).join(', ')} onChange={v => update(i, 'tags', v.split(',').map(t => t.trim()).filter(Boolean))} placeholder="Python, TensorFlow, LLMs" />
+        </EditorCard>
+      ))}
+      <button onClick={add} className="w-full py-3 border-2 border-dashed border-zinc-300 rounded-xl text-zinc-500 font-semibold hover:border-zinc-400 hover:text-zinc-700 transition-colors">+ Add Mentor</button>
+      <div className="flex justify-end"><SaveBtn onClick={() => onSave(mentors)} /></div>
+    </div>
+  );
+}
+
+// ── FAQs Editor ──────────────────────────────────────────────────────────────
+function FAQsEditor({ data, onSave }) {
+  const [faqs, setFaqs] = useState(data || []);
+  const update = (i, key, val) => { const s = [...faqs]; s[i] = { ...s[i], [key]: val }; setFaqs(s); };
+  const add = () => setFaqs([...faqs, { q: '', a: '' }]);
+  const remove = (i) => setFaqs(faqs.filter((_, j) => j !== i));
+  return (
+    <div className="space-y-4">
+      <SectionHeader title="FAQs" desc="Frequently Asked Questions shown on the homepage" />
+      {faqs.map((f, i) => (
+        <EditorCard key={i} title={f.q || `FAQ ${i + 1}`} onDelete={() => remove(i)}>
+          <Field label="Question" value={f.q} onChange={v => update(i, 'q', v)} />
+          <Field label="Answer" value={f.a} onChange={v => update(i, 'a', v)} multiline />
+        </EditorCard>
+      ))}
+      <button onClick={add} className="w-full py-3 border-2 border-dashed border-zinc-300 rounded-xl text-zinc-500 font-semibold hover:border-zinc-400 hover:text-zinc-700 transition-colors">+ Add FAQ</button>
+      <div className="flex justify-end"><SaveBtn onClick={() => onSave(faqs)} /></div>
+    </div>
+  );
+}
+
+// ── Tech Stack Editor ────────────────────────────────────────────────────────
+function TechStackEditor({ data, onSave }) {
+  const [items, setItems] = useState(data || []);
+  const update = (i, key, val) => { const s = [...items]; s[i] = { ...s[i], [key]: val }; setItems(s); };
+  const add = () => setItems([...items, { icon: '', name: '' }]);
+  const remove = (i) => setItems(items.filter((_, j) => j !== i));
+  return (
+    <div className="space-y-4">
+      <SectionHeader title="Tech Stack" desc="Technologies shown at the bottom of the homepage" />
+      {items.map((t, i) => (
+        <EditorCard key={i} title={t.name || `Tech ${i + 1}`} onDelete={() => remove(i)}>
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Emoji Icon" value={t.icon} onChange={v => update(i, 'icon', v)} placeholder="🐍" />
+            <Field label="Name" value={t.name} onChange={v => update(i, 'name', v)} placeholder="Python" />
+          </div>
+        </EditorCard>
+      ))}
+      <button onClick={add} className="w-full py-3 border-2 border-dashed border-zinc-300 rounded-xl text-zinc-500 font-semibold hover:border-zinc-400 hover:text-zinc-700 transition-colors">+ Add Tech</button>
+      <div className="flex justify-end"><SaveBtn onClick={() => onSave(items)} /></div>
+    </div>
+  );
+}
+
+// ── Student Gallery Editor ───────────────────────────────────────────────────
+function StudentGalleryEditor({ data, onSave }) {
+  const [students, setStudents] = useState(data || []);
+  const update = (i, key, val) => { const s = [...students]; s[i] = { ...s[i], [key]: val }; setStudents(s); };
+  const add = () => setStudents([...students, { name: '', grade: '', school: '', subject: '', project: '', quote: '', achievement: '', emoji: '' }]);
+  const remove = (i) => setStudents(students.filter((_, j) => j !== i));
+  return (
+    <div className="space-y-4">
+      <SectionHeader title="Student Gallery" desc="Student success stories shown on the homepage" />
+      {students.map((s, i) => (
+        <EditorCard key={i} title={s.name || `Student ${i + 1}`} onDelete={() => remove(i)}>
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Name" value={s.name} onChange={v => update(i, 'name', v)} />
+            <Field label="Grade" value={s.grade} onChange={v => update(i, 'grade', v)} placeholder="Grade 8" />
+            <Field label="School" value={s.school} onChange={v => update(i, 'school', v)} />
+            <Field label="Subject" value={s.subject} onChange={v => update(i, 'subject', v)} />
+          </div>
+          <Field label="Project" value={s.project} onChange={v => update(i, 'project', v)} />
+          <Field label="Quote" value={s.quote} onChange={v => update(i, 'quote', v)} multiline />
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Achievement" value={s.achievement} onChange={v => update(i, 'achievement', v)} />
+            <Field label="Emoji" value={s.emoji} onChange={v => update(i, 'emoji', v)} placeholder="🤖" />
+          </div>
+        </EditorCard>
+      ))}
+      <button onClick={add} className="w-full py-3 border-2 border-dashed border-zinc-300 rounded-xl text-zinc-500 font-semibold hover:border-zinc-400 hover:text-zinc-700 transition-colors">+ Add Student</button>
+      <div className="flex justify-end"><SaveBtn onClick={() => onSave(students)} /></div>
+    </div>
+  );
+}
+
+// ── Lab Cards Editor ─────────────────────────────────────────────────────────
+function LabCardsEditor({ data, onSave }) {
+  const [cards, setCards] = useState(data || []);
+  const update = (i, key, val) => { const s = [...cards]; s[i] = { ...s[i], [key]: val }; setCards(s); };
+  const add = () => setCards([...cards, { title: '', desc: '', gradient: 'from-blue-500 to-indigo-600', iconName: 'Code' }]);
+  const remove = (i) => setCards(cards.filter((_, j) => j !== i));
+  return (
+    <div className="space-y-4">
+      <SectionHeader title="Lab Cards" desc="Icon cards shown in the Life at Amara Nexa carousel" />
+      {cards.map((c, i) => (
+        <EditorCard key={i} title={c.title || `Card ${i + 1}`} onDelete={() => remove(i)}>
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Title" value={c.title} onChange={v => update(i, 'title', v)} />
+            <Field label="Description" value={c.desc} onChange={v => update(i, 'desc', v)} />
+            <Field label="Icon Name" value={c.iconName} onChange={v => update(i, 'iconName', v)} placeholder="Code, Bot, BrainCircuit..." />
+            <Field label="Gradient" value={c.gradient} onChange={v => update(i, 'gradient', v)} placeholder="from-blue-500 to-indigo-600" />
+          </div>
+        </EditorCard>
+      ))}
+      <button onClick={add} className="w-full py-3 border-2 border-dashed border-zinc-300 rounded-xl text-zinc-500 font-semibold hover:border-zinc-400 hover:text-zinc-700 transition-colors">+ Add Card</button>
+      <div className="flex justify-end"><SaveBtn onClick={() => onSave(cards)} /></div>
+    </div>
+  );
+}
+
+// ── Blog Categories Editor ───────────────────────────────────────────────────
+function BlogCategoriesEditor({ data, onSave }) {
+  const [cats, setCats] = useState((data || []).join('\n'));
+  return (
+    <div className="space-y-4">
+      <SectionHeader title="Blog Categories" desc="Category filters shown on the blog page (one per line)" />
+      <textarea value={cats} onChange={e => setCats(e.target.value)} rows={10} className="w-full px-4 py-3 border border-zinc-200 rounded-xl bg-white focus:ring-2 focus:ring-black/5 focus:border-zinc-400 transition-colors font-mono text-sm" />
+      <div className="flex justify-end"><SaveBtn onClick={() => onSave(cats.split('\n').map(c => c.trim()).filter(Boolean))} /></div>
+    </div>
+  );
+}
+
 // ── Homepage Section ──────────────────────────────────────────────────────────
 function HomepageSection() {
   const [activeTab, setActiveTab] = useState('hero');
@@ -995,11 +1183,19 @@ function HomepageSection() {
 
   const TABS = [
     { id: 'hero', label: 'Hero' },
+    { id: 'stats', label: 'Stats' },
     { id: 'gallery', label: 'Gallery' },
     { id: 'videos', label: 'Videos' },
+    { id: 'labcards', label: 'Lab Cards' },
     { id: 'testimonials', label: 'Testimonials' },
     { id: 'features', label: 'Features' },
     { id: 'perks', label: 'Perks' },
+    { id: 'mentors', label: 'Mentors' },
+    { id: 'students', label: 'Students' },
+    { id: 'schools', label: 'Partner Schools' },
+    { id: 'techstack', label: 'Tech Stack' },
+    { id: 'faqs', label: 'FAQs' },
+    { id: 'blogcats', label: 'Blog Categories' },
     { id: 'cta', label: 'CTA' },
   ];
 
@@ -1022,11 +1218,19 @@ function HomepageSection() {
         ))}
       </div>
       {activeTab === 'hero' && <HeroEditor data={content.hero} onSave={d => handleSave('hero', d)} />}
+      {activeTab === 'stats' && <StatsEditor data={content.stats} onSave={d => handleSave('stats', d)} />}
       {activeTab === 'gallery' && <GalleryEditor data={content.gallery} onSave={d => handleSave('gallery', d)} />}
       {activeTab === 'videos' && <VideosEditor data={content.lifeSection} onSave={d => handleSave('lifeSection', d)} />}
+      {activeTab === 'labcards' && <LabCardsEditor data={content.labCards} onSave={d => handleSave('labCards', d)} />}
       {activeTab === 'testimonials' && <TestimonialsEditor data={content.testimonials} onSave={d => handleSave('testimonials', d)} />}
       {activeTab === 'features' && <FeaturesEditor data={content.features} onSave={d => handleSave('features', d)} />}
       {activeTab === 'perks' && <PerksEditor data={content.perks} onSave={d => handleSave('perks', d)} />}
+      {activeTab === 'mentors' && <MentorsEditor data={content.mentors} onSave={d => handleSave('mentors', d)} />}
+      {activeTab === 'students' && <StudentGalleryEditor data={content.studentGallery} onSave={d => handleSave('studentGallery', d)} />}
+      {activeTab === 'schools' && <PartnerSchoolsEditor data={content.partnerSchools} onSave={d => handleSave('partnerSchools', d)} />}
+      {activeTab === 'techstack' && <TechStackEditor data={content.techStack} onSave={d => handleSave('techStack', d)} />}
+      {activeTab === 'faqs' && <FAQsEditor data={content.faqs} onSave={d => handleSave('faqs', d)} />}
+      {activeTab === 'blogcats' && <BlogCategoriesEditor data={content.blogCategories} onSave={d => handleSave('blogCategories', d)} />}
       {activeTab === 'cta' && <CTAEditor data={content.cta} onSave={d => handleSave('cta', d)} />}
     </>
   );
