@@ -378,32 +378,6 @@ export const Hero = () => {
         </motion.div>
       </div>
 
-      {/* ── Animated Counters Strip ── */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="w-full max-w-5xl mx-auto relative z-10 mb-20"
-      >
-        <div className="bg-white rounded-[2rem] border border-slate-100 shadow-xl overflow-hidden">
-          <div className="grid grid-cols-2 md:grid-cols-4">
-            {(content.stats || [
-              { value: 5000, suffix: '+', label: 'Students Enrolled', color: 'text-brand-primary' },
-              { value: 54, suffix: '+', label: 'Partner Schools', color: 'text-violet-500' },
-              { value: 9, suffix: '', label: 'Courses Available', color: 'text-amber-500' },
-              { value: 100, suffix: '%', label: 'Lab Uptime', color: 'text-emerald-500' },
-            ]).map((stat, i) => (
-              <div key={i} className={`p-8 text-center ${i < 3 ? 'border-r border-slate-100' : ''} ${i >= 2 ? 'border-t border-slate-100 md:border-t-0' : ''}`}>
-                <p className={`text-4xl font-display font-black mb-1 ${stat.color}`}>
-                  <AnimatedCounter target={stat.value} suffix={stat.suffix} />
-                </p>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </motion.div>
-
     </section>
   );
 };
