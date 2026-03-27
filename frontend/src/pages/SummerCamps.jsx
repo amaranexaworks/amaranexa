@@ -529,13 +529,12 @@ export const SummerCamps = () => {
                 transition={{ type: 'spring', damping: 22, stiffness: 280 }}
                 style={{
                   position: 'relative',
-                  width: '100%',
-                  maxWidth: '480px',
-                  borderRadius: '20px',
+                  width: '420px',
+                  height: '280px',
+                  borderRadius: '16px',
                   overflow: 'hidden',
                   boxShadow: '0 30px 80px rgba(0,0,0,0.6)',
                   background: '#000',
-                  aspectRatio: '9/16',
                 }}
                 onClick={(e) => e.stopPropagation()}
               >
