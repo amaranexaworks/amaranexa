@@ -659,19 +659,6 @@ export const LifeAtAmara = () => {
             </p>
           </div>
 
-          {/* Stats row */}
-          <div className="flex gap-6 shrink-0">
-            {(content.stats || [
-              { value: 54, suffix: '+', label: 'Schools' },
-              { value: 5000, suffix: '+', label: 'Students' },
-              { value: 100, suffix: '%', label: 'Uptime' },
-            ]).slice(0, 3).map((s, i) => (
-              <div key={i} className="text-center">
-                <p className="text-2xl font-black text-brand-primary">{s.value}{s.suffix}</p>
-                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">{s.label}</p>
-              </div>
-            ))}
-          </div>
         </motion.div>
       </div>
 
