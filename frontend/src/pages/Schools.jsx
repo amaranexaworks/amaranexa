@@ -445,38 +445,35 @@ export const Schools = () => {
           <h2 className="text-2xl font-bold text-white mb-12" dangerouslySetInnerHTML={{ __html: (content.socialProofHeadline || '30+ schools trust our services for their students').replace(/(\d+\+)/, '<span class="text-[#EAB308]">$1</span>') }} />
         </div>
 
-        {/* Floating Schools Marquee - Row 1 */}
+        {/* Floating Schools Marquee - Row 1 & 2 */}
+        {(() => {
+          const fill = (arr) => { if (!arr.length) return []; let r = []; while (r.length < 12) r = [...r, ...arr]; return r; };
+          const half = Math.ceil(partnerSchools.length / 2);
+          const row1 = partnerSchools.length ? partnerSchools.slice(0, half) : [];
+          const row2 = partnerSchools.length > 2 ? partnerSchools.slice(half) : [...partnerSchools].reverse();
+          const items1 = fill(row1);
+          const items2 = fill(row2);
+          return (<>
         <div className="relative w-full overflow-hidden mb-4" style={{ maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)' }}>
           <div className="flex gap-4 whitespace-nowrap animate-marquee-ltr">
-            {(() => {
-              const half = Math.ceil(partnerSchools.length / 2);
-              const row1 = partnerSchools.length ? partnerSchools.slice(0, half) : [];
-              const items = [...row1, ...row1];
-              return items.map((s, i) => (
-                <div key={i} className={`flex-shrink-0 px-6 py-3 rounded-full border text-sm font-semibold animate-float-${i % 4} ${PILL_COLORS[i % PILL_COLORS.length]}`}>
-                  {s.name}
-                </div>
-              ));
-            })()}
+            {items1.map((s, i) => (
+              <div key={i} className={`flex-shrink-0 px-6 py-3 rounded-full border text-sm font-semibold animate-float-${i % 4} ${PILL_COLORS[i % PILL_COLORS.length]}`}>
+                {s.name}
+              </div>
+            ))}
           </div>
         </div>
-
-        {/* Floating Schools Marquee - Row 2 (reverse) */}
         <div className="relative w-full overflow-hidden" style={{ maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)' }}>
           <div className="flex gap-4 whitespace-nowrap animate-marquee-rtl">
-            {(() => {
-              const half = Math.ceil(partnerSchools.length / 2);
-              const row2 = partnerSchools.length ? partnerSchools.slice(half) : [];
-              const items = [...row2, ...row2];
-              return items.map((s, i) => (
-                <div key={i} className={`flex-shrink-0 px-6 py-3 rounded-full border text-sm font-semibold animate-float-${(i + 2) % 4} ${PILL_COLORS[(i + 8) % PILL_COLORS.length]}`}>
-                  {s.name}
-                </div>
-              ));
-            })()}
+            {items2.map((s, i) => (
+              <div key={i} className={`flex-shrink-0 px-6 py-3 rounded-full border text-sm font-semibold animate-float-${(i + 2) % 4} ${PILL_COLORS[(i + 8) % PILL_COLORS.length]}`}>
+                {s.name}
+              </div>
+            ))}
           </div>
         </div>
-
+          </>);
+        })()}
 
         <style>{`
           @keyframes marquee-ltr {

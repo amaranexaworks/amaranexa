@@ -399,7 +399,7 @@ const PILL_COLORS = [
 
 // ── PartnerSchools ───────────────────────────────────────────────────────────
 export const PartnerSchools = () => {
-  const [schools, setSchools] = useState(PARTNER_SCHOOLS);
+  const [schools, setSchools] = useState(() => getHomeContentSync().partnerSchools?.length ? getHomeContentSync().partnerSchools : []);
   useEffect(() => { getHomeContent().then(c => { if (c.partnerSchools?.length) setSchools(c.partnerSchools); }); }, []);
   useEffect(() => {
     const sync = () => { if (!document.hidden) getHomeContent().then(c => { if (c.partnerSchools?.length) setSchools(c.partnerSchools); }); };
@@ -407,10 +407,14 @@ export const PartnerSchools = () => {
     return () => document.removeEventListener('visibilitychange', sync);
   }, []);
 
-  const row1 = schools.slice(0, Math.ceil(schools.length / 2));
-  const row2 = schools.slice(Math.ceil(schools.length / 2));
-  const doubled1 = [...row1, ...row1];
-  const doubled2 = [...row2, ...row2];
+  // Ensure both rows always have content — if ≤4 schools, show all in both rows
+  const half = Math.ceil(schools.length / 2);
+  const row1 = schools.length > 0 ? schools.slice(0, half) : [];
+  const row2 = schools.length > 0 ? (schools.length > 2 ? schools.slice(half) : [...schools].reverse()) : [];
+  // Repeat enough times so marquee fills the screen
+  const fill = (arr) => { if (!arr.length) return []; let r = []; while (r.length < 12) r = [...r, ...arr]; return r; };
+  const doubled1 = fill(row1);
+  const doubled2 = fill(row2);
 
   return (
     <div className="w-full py-14 overflow-hidden border-t border-slate-100" style={{ background: 'linear-gradient(135deg, #0a0f1a 0%, #1a1040 60%, #0c1a2e 100%)' }}>
