@@ -9,6 +9,7 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import { getPagesContent, getPagesContentSync } from '../utils/pagesStore';
 import { TiltCard } from '../components/TiltCard';
+import { EnrollmentForm } from '../components/EnrollmentForm';
 
 // ── Animated stat counter ──
 function AnimCounter({ target, suffix = '', duration = 1800 }) {
@@ -245,6 +246,7 @@ export const SummerCamps = () => {
   const [selectedCamp, setSelectedCamp] = useState(0);
   const [scrolled, setScrolled] = useState(false);
   const [videoModal, setVideoModal] = useState(null);
+  const [showEnrollment, setShowEnrollment] = useState(false);
   const [content, setContent] = useState(getPagesContentSync().summerCamps);
 
   useEffect(() => {
@@ -300,7 +302,7 @@ export const SummerCamps = () => {
               <a key={l.label} href={l.href} onClick={(e) => { e.preventDefault(); document.querySelector(l.href)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} className="text-sm font-semibold text-amber-800/60 hover:text-slate-900 transition-colors">{l.label}</a>
             ))}
           </div>
-          <button className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:shadow-lg hover:shadow-amber-500/30 transition-all">
+          <button onClick={() => setShowEnrollment(true)} className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:shadow-lg hover:shadow-amber-500/30 transition-all">
             <Zap size={14} className="fill-white" /> Book Now
           </button>
         </div>
@@ -576,12 +578,13 @@ export const SummerCamps = () => {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500">AI journey?</span>
           </h2>
           <p className="text-amber-900/60 mb-10 text-lg">Secure your spot in the most advanced school coding program in India.</p>
-          <button className="inline-flex items-center gap-3 bg-gradient-to-r from-amber-500 to-orange-600 text-white px-10 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-amber-500/40 hover:scale-105 transition-all">
+          <button onClick={() => setShowEnrollment(true)} className="inline-flex items-center gap-3 bg-gradient-to-r from-amber-500 to-orange-600 text-white px-10 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-amber-500/40 hover:scale-105 transition-all">
             <Zap size={20} className="fill-white" /> Book a Camp Today
           </button>
         </motion.div>
       </section>
 
+      <EnrollmentForm isOpen={showEnrollment} onClose={() => setShowEnrollment(false)} />
     </div>
   );
 };
