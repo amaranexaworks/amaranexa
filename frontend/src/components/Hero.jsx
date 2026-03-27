@@ -408,6 +408,21 @@ export const Hero = () => {
   );
 };
 
+const PILL_COLORS = [
+  'bg-blue-500/20 border-blue-500/40 text-blue-300',
+  'bg-emerald-500/20 border-emerald-500/40 text-emerald-300',
+  'bg-purple-500/20 border-purple-500/40 text-purple-300',
+  'bg-orange-500/20 border-orange-500/40 text-orange-300',
+  'bg-pink-500/20 border-pink-500/40 text-pink-300',
+  'bg-cyan-500/20 border-cyan-500/40 text-cyan-300',
+  'bg-yellow-500/20 border-yellow-500/40 text-yellow-300',
+  'bg-red-500/20 border-red-500/40 text-red-300',
+  'bg-violet-500/20 border-violet-500/40 text-violet-300',
+  'bg-teal-500/20 border-teal-500/40 text-teal-300',
+  'bg-fuchsia-500/20 border-fuchsia-500/40 text-fuchsia-300',
+  'bg-lime-500/20 border-lime-500/40 text-lime-300',
+];
+
 // ── PartnerSchools ───────────────────────────────────────────────────────────
 export const PartnerSchools = () => {
   const [schools, setSchools] = useState(PARTNER_SCHOOLS);
@@ -417,29 +432,52 @@ export const PartnerSchools = () => {
     document.addEventListener('visibilitychange', sync);
     return () => document.removeEventListener('visibilitychange', sync);
   }, []);
+
+  const row1 = schools.slice(0, Math.ceil(schools.length / 2));
+  const row2 = schools.slice(Math.ceil(schools.length / 2));
+  const doubled1 = [...row1, ...row1];
+  const doubled2 = [...row2, ...row2];
+
   return (
-  <div className="w-full py-14 overflow-hidden bg-white border-t border-slate-100">
-    <p className="text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.35em] mb-7">Trusted by schools across India</p>
-    <div className="relative flex overflow-hidden">
-      <motion.div
-        animate={{ x: [0, `-${schools.length * 220}px`] }}
-        transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
-        className="flex gap-4 shrink-0"
-      >
-        {[...schools, ...schools, ...schools].map((school, i) => (
-          <div key={i} className="flex items-center gap-3 bg-white border border-slate-100 rounded-2xl px-5 py-3 shadow-sm shrink-0">
-            <div className="w-8 h-8 bg-brand-primary/10 rounded-lg flex items-center justify-center text-sm font-black text-brand-primary">
-              {school.name.charAt(0)}
+    <div className="w-full py-14 overflow-hidden border-t border-slate-100" style={{ background: 'linear-gradient(135deg, #0a0f1a 0%, #1a1040 60%, #0c1a2e 100%)' }}>
+      <p className="text-center text-[10px] font-black text-white/40 uppercase tracking-[0.35em] mb-8">Trusted by schools across India</p>
+
+      <div className="relative w-full overflow-hidden mb-4" style={{ maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)' }}>
+        <div className="flex gap-4 whitespace-nowrap animate-marquee-ltr">
+          {doubled1.map((school, i) => (
+            <div key={i} className={`flex-shrink-0 px-6 py-3 rounded-full border text-sm font-semibold animate-float-${i % 4} ${PILL_COLORS[i % PILL_COLORS.length]}`}>
+              {school.name}
             </div>
-            <div>
-              <p className="text-xs font-black text-slate-700 whitespace-nowrap">{school.name}</p>
-              <p className="text-[10px] text-slate-400 font-medium">{school.city}</p>
+          ))}
+        </div>
+      </div>
+
+      <div className="relative w-full overflow-hidden" style={{ maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)' }}>
+        <div className="flex gap-4 whitespace-nowrap animate-marquee-rtl">
+          {doubled2.map((school, i) => (
+            <div key={i} className={`flex-shrink-0 px-6 py-3 rounded-full border text-sm font-semibold animate-float-${(i + 2) % 4} ${PILL_COLORS[(i + 4) % PILL_COLORS.length]}`}>
+              {school.name}
             </div>
-          </div>
-        ))}
-      </motion.div>
+          ))}
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes marquee-ltr { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes marquee-rtl { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+        @keyframes float0 { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
+        @keyframes float1 { 0%,100% { transform: translateY(-4px); } 50% { transform: translateY(4px); } }
+        @keyframes float2 { 0%,100% { transform: translateY(-2px); } 50% { transform: translateY(6px); } }
+        @keyframes float3 { 0%,100% { transform: translateY(4px); } 50% { transform: translateY(-4px); } }
+        .animate-marquee-ltr { animation: marquee-ltr 30s linear infinite; }
+        .animate-marquee-rtl { animation: marquee-rtl 25s linear infinite; }
+        .animate-marquee-ltr:hover, .animate-marquee-rtl:hover { animation-play-state: paused; }
+        .animate-float-0 { animation: float0 3s ease-in-out infinite; }
+        .animate-float-1 { animation: float1 3.5s ease-in-out infinite; }
+        .animate-float-2 { animation: float2 4s ease-in-out infinite; }
+        .animate-float-3 { animation: float3 2.8s ease-in-out infinite; }
+      `}</style>
     </div>
-  </div>
   );
 };
 
