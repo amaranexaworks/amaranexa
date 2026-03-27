@@ -12,11 +12,12 @@ export const Navbar = () => {
   const [navLinks, setNavLinks] = useState([]);
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [announcementVisible] = useState(false);
-  const [announcement] = useState({ text: '', linkText: '', enabled: false });
+  const [announcementVisible, setAnnouncementVisible] = useState(true);
+  const [announcement, setAnnouncement] = useState({ text: 'Limited school partnerships open for 2026 —', linkText: 'Reserve your slot →', enabled: true });
 
   useEffect(() => {
     getNavLinks().then(links => setNavLinks(links.filter(l => l.enabled)));
+    getHomeContent().then(c => { if (c.announcement) setAnnouncement(c.announcement); });
   }, []);
 
   useEffect(() => {

@@ -58,7 +58,6 @@ function ScrollProgressBar() {
   );
 }
 import { Navbar } from './components/Navbar';
-import LaunchCover from './components/LaunchBanner';
 import { ChatWidget } from './components/ChatWidget';
 import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
@@ -108,7 +107,6 @@ const AppContent = () => {
   const hideNavFooter = isAdmin || isSummerCamp || isSchools;
 
   return (
-    <LaunchCover>
       <div className="min-h-screen bg-white font-sans text-zinc-900 selection:bg-brand-primary selection:text-white">
         <CursorGlow />
         <ScrollProgressBar />
@@ -137,7 +135,6 @@ const AppContent = () => {
         <WhatsAppButton />
         <ChatWidget />
       </div>
-    </LaunchCover>
   );
 };
 
