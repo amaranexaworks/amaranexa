@@ -459,13 +459,14 @@ export const SummerCamps = () => {
                 transition={{ delay: i * 0.1, duration: 0.5 }}
                 className="relative rounded-[2rem] overflow-hidden group cursor-pointer"
                 style={{ background: t.gradient, minHeight: 380 }}
+                onClick={() => setVideoModal(t.video)}
               >
                 {/* Decorative circles */}
                 <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/10 pointer-events-none" />
                 <div className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full bg-white/10 pointer-events-none" />
 
                 {/* Video thumbnail area */}
-                <div className="relative mx-6 mt-6 rounded-2xl overflow-hidden h-44 group/thumb" onClick={() => setVideoModal(t.video)}>
+                <div className="relative mx-6 mt-6 rounded-2xl overflow-hidden h-44 group/thumb">
                   <img src={t.thumb} alt={t.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" referrerPolicy="no-referrer" />
                   <div className="absolute inset-0 bg-black/30 group-hover/thumb:bg-black/40 transition-colors" />
                   {/* Play button */}
