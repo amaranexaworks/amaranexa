@@ -4,6 +4,26 @@ import { ArrowUpRight, ChevronLeft, ChevronDown, Terminal } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { MeetingForm } from '../components/MeetingForm';
 import { getPagesContent, getPagesContentSync } from '../utils/pagesStore';
+import { getHomeContent, getHomeContentSync } from '../utils/homeStore';
+
+const PILL_COLORS = [
+  'bg-blue-500/20 border-blue-500/40 text-blue-300',
+  'bg-emerald-500/20 border-emerald-500/40 text-emerald-300',
+  'bg-purple-500/20 border-purple-500/40 text-purple-300',
+  'bg-orange-500/20 border-orange-500/40 text-orange-300',
+  'bg-pink-500/20 border-pink-500/40 text-pink-300',
+  'bg-cyan-500/20 border-cyan-500/40 text-cyan-300',
+  'bg-yellow-500/20 border-yellow-500/40 text-yellow-300',
+  'bg-red-500/20 border-red-500/40 text-red-300',
+  'bg-violet-500/20 border-violet-500/40 text-violet-300',
+  'bg-teal-500/20 border-teal-500/40 text-teal-300',
+  'bg-fuchsia-500/20 border-fuchsia-500/40 text-fuchsia-300',
+  'bg-lime-500/20 border-lime-500/40 text-lime-300',
+  'bg-sky-500/20 border-sky-500/40 text-sky-300',
+  'bg-rose-500/20 border-rose-500/40 text-rose-300',
+  'bg-amber-500/20 border-amber-500/40 text-amber-300',
+  'bg-indigo-500/20 border-indigo-500/40 text-indigo-300',
+];
 
 const SERVICES_DROPDOWN = [
   { label: 'National Competitions', desc: 'Inter-school tech fests & robotics challenges' },
@@ -16,9 +36,11 @@ export const Schools = () => {
   const [servicesOpen, setServicesOpen] = useState(false);
   const servicesRef = useRef(null);
   const [content, setContent] = useState(getPagesContentSync().schools);
+  const [partnerSchools, setPartnerSchools] = useState(getHomeContentSync().partnerSchools || []);
 
   useEffect(() => {
     getPagesContent().then(p => setContent(p.schools));
+    getHomeContent().then(c => { if (c.partnerSchools?.length) setPartnerSchools(c.partnerSchools); });
   }, []);
 
   useEffect(() => {
@@ -413,58 +435,35 @@ export const Schools = () => {
         {/* Floating Schools Marquee - Row 1 */}
         <div className="relative w-full overflow-hidden mb-4" style={{ maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)' }}>
           <div className="flex gap-4 whitespace-nowrap animate-marquee-ltr">
-            {[
-              { name: 'Delhi Public School', colors: 'bg-blue-500/20 border-blue-500/40 text-blue-300' },
-              { name: 'Kendriya Vidyalaya', colors: 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300' },
-              { name: "St. Xavier's High School", colors: 'bg-purple-500/20 border-purple-500/40 text-purple-300' },
-              { name: 'DAV Public School', colors: 'bg-orange-500/20 border-orange-500/40 text-orange-300' },
-              { name: 'Narayana School', colors: 'bg-pink-500/20 border-pink-500/40 text-pink-300' },
-              { name: 'Sri Chaitanya School', colors: 'bg-cyan-500/20 border-cyan-500/40 text-cyan-300' },
-              { name: 'Ryan International', colors: 'bg-yellow-500/20 border-yellow-500/40 text-yellow-300' },
-              { name: 'Amity International', colors: 'bg-red-500/20 border-red-500/40 text-red-300' },
-              { name: 'Delhi Public School', colors: 'bg-blue-500/20 border-blue-500/40 text-blue-300' },
-              { name: 'Kendriya Vidyalaya', colors: 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300' },
-              { name: "St. Xavier's High School", colors: 'bg-purple-500/20 border-purple-500/40 text-purple-300' },
-              { name: 'DAV Public School', colors: 'bg-orange-500/20 border-orange-500/40 text-orange-300' },
-              { name: 'Narayana School', colors: 'bg-pink-500/20 border-pink-500/40 text-pink-300' },
-              { name: 'Sri Chaitanya School', colors: 'bg-cyan-500/20 border-cyan-500/40 text-cyan-300' },
-              { name: 'Ryan International', colors: 'bg-yellow-500/20 border-yellow-500/40 text-yellow-300' },
-              { name: 'Amity International', colors: 'bg-red-500/20 border-red-500/40 text-red-300' },
-            ].map((s, i) => (
-              <div key={i} className={`flex-shrink-0 px-6 py-3 rounded-full border text-sm font-semibold animate-float-${i % 4} ${s.colors}`}>
-                {s.name}
-              </div>
-            ))}
+            {(() => {
+              const half = Math.ceil(partnerSchools.length / 2);
+              const row1 = partnerSchools.length ? partnerSchools.slice(0, half) : [];
+              const items = [...row1, ...row1];
+              return items.map((s, i) => (
+                <div key={i} className={`flex-shrink-0 px-6 py-3 rounded-full border text-sm font-semibold animate-float-${i % 4} ${PILL_COLORS[i % PILL_COLORS.length]}`}>
+                  {s.name}
+                </div>
+              ));
+            })()}
           </div>
         </div>
 
         {/* Floating Schools Marquee - Row 2 (reverse) */}
         <div className="relative w-full overflow-hidden" style={{ maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)' }}>
           <div className="flex gap-4 whitespace-nowrap animate-marquee-rtl">
-            {[
-              { name: 'The Heritage School', colors: 'bg-violet-500/20 border-violet-500/40 text-violet-300' },
-              { name: 'Mount Litera Zee School', colors: 'bg-teal-500/20 border-teal-500/40 text-teal-300' },
-              { name: 'Orchids International', colors: 'bg-fuchsia-500/20 border-fuchsia-500/40 text-fuchsia-300' },
-              { name: 'Vidyamandir Classes', colors: 'bg-lime-500/20 border-lime-500/40 text-lime-300' },
-              { name: 'GD Goenka Public School', colors: 'bg-sky-500/20 border-sky-500/40 text-sky-300' },
-              { name: 'Podar International', colors: 'bg-rose-500/20 border-rose-500/40 text-rose-300' },
-              { name: 'Birla Open Minds', colors: 'bg-amber-500/20 border-amber-500/40 text-amber-300' },
-              { name: 'Cambridge School', colors: 'bg-indigo-500/20 border-indigo-500/40 text-indigo-300' },
-              { name: 'The Heritage School', colors: 'bg-violet-500/20 border-violet-500/40 text-violet-300' },
-              { name: 'Mount Litera Zee School', colors: 'bg-teal-500/20 border-teal-500/40 text-teal-300' },
-              { name: 'Orchids International', colors: 'bg-fuchsia-500/20 border-fuchsia-500/40 text-fuchsia-300' },
-              { name: 'Vidyamandir Classes', colors: 'bg-lime-500/20 border-lime-500/40 text-lime-300' },
-              { name: 'GD Goenka Public School', colors: 'bg-sky-500/20 border-sky-500/40 text-sky-300' },
-              { name: 'Podar International', colors: 'bg-rose-500/20 border-rose-500/40 text-rose-300' },
-              { name: 'Birla Open Minds', colors: 'bg-amber-500/20 border-amber-500/40 text-amber-300' },
-              { name: 'Cambridge School', colors: 'bg-indigo-500/20 border-indigo-500/40 text-indigo-300' },
-            ].map((s, i) => (
-              <div key={i} className={`flex-shrink-0 px-6 py-3 rounded-full border text-sm font-semibold animate-float-${(i + 2) % 4} ${s.colors}`}>
-                {s.name}
-              </div>
-            ))}
+            {(() => {
+              const half = Math.ceil(partnerSchools.length / 2);
+              const row2 = partnerSchools.length ? partnerSchools.slice(half) : [];
+              const items = [...row2, ...row2];
+              return items.map((s, i) => (
+                <div key={i} className={`flex-shrink-0 px-6 py-3 rounded-full border text-sm font-semibold animate-float-${(i + 2) % 4} ${PILL_COLORS[(i + 8) % PILL_COLORS.length]}`}>
+                  {s.name}
+                </div>
+              ));
+            })()}
           </div>
         </div>
+
 
         <style>{`
           @keyframes marquee-ltr {
