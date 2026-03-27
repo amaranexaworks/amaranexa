@@ -512,8 +512,14 @@ export const SummerCamps = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.25 }}
-              className="fixed inset-0 flex items-center justify-center p-4"
-              style={{ zIndex: 99999, background: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(10px)' }}
+              style={{
+                position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                zIndex: 999999,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                padding: '16px',
+                background: 'rgba(0,0,0,0.9)',
+                backdropFilter: 'blur(10px)',
+              }}
               onClick={() => setVideoModal(null)}
             >
               <motion.div
