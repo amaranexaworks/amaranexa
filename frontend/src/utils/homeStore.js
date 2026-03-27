@@ -136,6 +136,11 @@ const DEFAULT_HOME_CONTENT = {
     ]},
   ],
   blogCategories: ['All Posts', 'Robotics', 'Artificial Intelligence', 'Science', 'Web Development', 'Drone', 'Machine Learning', 'Coding for Kids', 'STEM Education', 'Future of Tech', 'Student Projects'],
+  announcement: {
+    enabled: true,
+    text: 'Limited school partnerships open for 2026 —',
+    linkText: 'Reserve your slot →',
+  },
 };
 
 export async function getHomeContent() {

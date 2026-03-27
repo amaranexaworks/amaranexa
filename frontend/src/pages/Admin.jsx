@@ -1182,6 +1182,30 @@ function BlogCategoriesEditor({ data, onSave }) {
   );
 }
 
+// ── Announcement Bar Editor ──────────────────────────────────────────────────
+function AnnouncementEditor({ data, onSave }) {
+  const defaults = { enabled: true, text: 'Limited school partnerships open for 2026 —', linkText: 'Reserve your slot →' };
+  const [form, setForm] = useState(data || defaults);
+  const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+  return (
+    <div className="space-y-4">
+      <SectionHeader title="Announcement Bar" desc="The gradient bar shown above the navbar" />
+      <EditorCard title="Announcement Settings">
+        <div className="flex items-center gap-3 mb-2">
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" checked={!!form.enabled} onChange={e => set('enabled', e.target.checked)} className="sr-only peer" />
+            <div className="w-11 h-6 bg-zinc-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-zinc-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black" />
+          </label>
+          <span className="text-sm font-semibold text-zinc-700">{form.enabled ? 'Visible' : 'Hidden'}</span>
+        </div>
+        <Field label="Announcement Text" value={form.text} onChange={v => set('text', v)} placeholder="Limited school partnerships open for 2026 —" />
+        <Field label="Link Text (click opens enrollment form)" value={form.linkText} onChange={v => set('linkText', v)} placeholder="Reserve your slot →" />
+      </EditorCard>
+      <div className="flex justify-end"><SaveBtn onClick={() => onSave(form)} /></div>
+    </div>
+  );
+}
+
 // ── Homepage Section ──────────────────────────────────────────────────────────
 function HomepageSection() {
   const [activeTab, setActiveTab] = useState('hero');
@@ -1198,6 +1222,7 @@ function HomepageSection() {
   };
 
   const TABS = [
+    { id: 'announcement', label: 'Announcement Bar' },
     { id: 'hero', label: 'Hero' },
     { id: 'stats', label: 'Stats' },
     { id: 'gallery', label: 'Gallery' },
@@ -1233,6 +1258,7 @@ function HomepageSection() {
           </button>
         ))}
       </div>
+      {activeTab === 'announcement' && <AnnouncementEditor data={content.announcement} onSave={d => handleSave('announcement', d)} />}
       {activeTab === 'hero' && <HeroEditor data={content.hero} onSave={d => handleSave('hero', d)} />}
       {activeTab === 'stats' && <StatsEditor data={content.stats} onSave={d => handleSave('stats', d)} />}
       {activeTab === 'gallery' && <GalleryEditor data={content.gallery} onSave={d => handleSave('gallery', d)} />}
