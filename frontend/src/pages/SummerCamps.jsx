@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useInView } from 'motion/react';
 import {
   ChevronLeft, ChevronRight, CheckCircle2, Star, BrainCircuit, Quote,
@@ -501,47 +502,50 @@ export const SummerCamps = () => {
         </div>
       </section>
 
-      {/* ── Video Modal ── */}
-      <AnimatePresence>
-        {videoModal && (
-          <motion.div
-            key="video-modal-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4"
-            style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)' }}
-            onClick={() => setVideoModal(null)}
-          >
+      {/* ── Video Modal (rendered via portal to avoid transform stacking issues) ── */}
+      {createPortal(
+        <AnimatePresence>
+          {videoModal && (
             <motion.div
-              key="video-modal-content"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl"
-              style={{ aspectRatio: '16/9' }}
-              onClick={(e) => e.stopPropagation()}
+              key="video-modal-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="fixed inset-0 flex items-center justify-center p-4"
+              style={{ zIndex: 99999, background: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(10px)' }}
+              onClick={() => setVideoModal(null)}
             >
-              <iframe
-                src={`${videoModal}?autoplay=1&rel=0`}
-                title="Testimonial Video"
-                className="w-full h-full border-0"
-                style={{ width: '100%', height: '100%' }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-              <button
-                onClick={() => setVideoModal(null)}
-                className="absolute top-3 right-3 w-10 h-10 rounded-full bg-black/60 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors z-10"
+              <motion.div
+                key="video-modal-content"
+                initial={{ scale: 0.85, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.85, opacity: 0 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                className="relative w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl bg-black"
+                style={{ aspectRatio: '16/9' }}
+                onClick={(e) => e.stopPropagation()}
               >
-                <X size={20} />
-              </button>
+                <iframe
+                  src={`${videoModal}?autoplay=1&rel=0`}
+                  title="Testimonial Video"
+                  className="w-full h-full border-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+                <button
+                  onClick={() => setVideoModal(null)}
+                  className="absolute top-3 right-3 w-10 h-10 rounded-full bg-black/60 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+                  style={{ zIndex: 10 }}
+                >
+                  <X size={20} />
+                </button>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
 
       {/* ── FOOTER CTA ── */}
       <section className="py-20 px-8 text-center relative overflow-hidden bg-gradient-to-br from-amber-100/60 via-orange-50 to-yellow-50">
