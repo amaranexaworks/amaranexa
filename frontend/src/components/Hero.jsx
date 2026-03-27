@@ -387,12 +387,12 @@ export const Hero = () => {
       >
         <div className="bg-white rounded-[2rem] border border-slate-100 shadow-xl overflow-hidden">
           <div className="grid grid-cols-2 md:grid-cols-4">
-            {[
+            {(content.stats || [
               { value: 5000, suffix: '+', label: 'Students Enrolled', color: 'text-brand-primary' },
               { value: 54, suffix: '+', label: 'Partner Schools', color: 'text-violet-500' },
               { value: 9, suffix: '', label: 'Courses Available', color: 'text-amber-500' },
               { value: 100, suffix: '%', label: 'Lab Uptime', color: 'text-emerald-500' },
-            ].map((stat, i) => (
+            ]).map((stat, i) => (
               <div key={i} className={`p-8 text-center ${i < 3 ? 'border-r border-slate-100' : ''} ${i >= 2 ? 'border-t border-slate-100 md:border-t-0' : ''}`}>
                 <p className={`text-4xl font-display font-black mb-1 ${stat.color}`}>
                   <AnimatedCounter target={stat.value} suffix={stat.suffix} />
@@ -409,16 +409,24 @@ export const Hero = () => {
 };
 
 // ── PartnerSchools ───────────────────────────────────────────────────────────
-export const PartnerSchools = () => (
+export const PartnerSchools = () => {
+  const [schools, setSchools] = useState(PARTNER_SCHOOLS);
+  useEffect(() => { getHomeContent().then(c => { if (c.partnerSchools?.length) setSchools(c.partnerSchools); }); }, []);
+  useEffect(() => {
+    const sync = () => { if (!document.hidden) getHomeContent().then(c => { if (c.partnerSchools?.length) setSchools(c.partnerSchools); }); };
+    document.addEventListener('visibilitychange', sync);
+    return () => document.removeEventListener('visibilitychange', sync);
+  }, []);
+  return (
   <div className="w-full py-14 overflow-hidden bg-white border-t border-slate-100">
     <p className="text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.35em] mb-7">Trusted by schools across India</p>
     <div className="relative flex overflow-hidden">
       <motion.div
-        animate={{ x: [0, `-${PARTNER_SCHOOLS.length * 220}px`] }}
+        animate={{ x: [0, `-${schools.length * 220}px`] }}
         transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
         className="flex gap-4 shrink-0"
       >
-        {[...PARTNER_SCHOOLS, ...PARTNER_SCHOOLS, ...PARTNER_SCHOOLS].map((school, i) => (
+        {[...schools, ...schools, ...schools].map((school, i) => (
           <div key={i} className="flex items-center gap-3 bg-white border border-slate-100 rounded-2xl px-5 py-3 shadow-sm shrink-0">
             <div className="w-8 h-8 bg-brand-primary/10 rounded-lg flex items-center justify-center text-sm font-black text-brand-primary">
               {school.name.charAt(0)}
@@ -432,7 +440,8 @@ export const PartnerSchools = () => (
       </motion.div>
     </div>
   </div>
-);
+  );
+};
 
 // ── StudentGallery ───────────────────────────────────────────────────────────
 export const StudentGallery = () => {
@@ -614,13 +623,13 @@ export const LifeAtAmara = () => {
 
           {/* Stats row */}
           <div className="flex gap-6 shrink-0">
-            {[
-              { value: '54+', label: 'Schools' },
-              { value: '5K+', label: 'Students' },
-              { value: '100%', label: 'Uptime' },
-            ].map((s, i) => (
+            {(content.stats || [
+              { value: 54, suffix: '+', label: 'Schools' },
+              { value: 5000, suffix: '+', label: 'Students' },
+              { value: 100, suffix: '%', label: 'Uptime' },
+            ]).slice(0, 3).map((s, i) => (
               <div key={i} className="text-center">
-                <p className="text-2xl font-black text-brand-primary">{s.value}</p>
+                <p className="text-2xl font-black text-brand-primary">{s.value}{s.suffix}</p>
                 <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">{s.label}</p>
               </div>
             ))}
@@ -635,23 +644,31 @@ export const LifeAtAmara = () => {
         <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
         <div className="relative flex overflow-hidden">
-          <motion.div
-            animate={{ x: [0, -(336 * LAB_CARDS.length)] }}
-            transition={{ duration: LAB_CARDS.length * 5, repeat: Infinity, ease: 'linear' }}
-            className="flex gap-6 px-4"
-          >
-            {[...LAB_CARDS, ...LAB_CARDS].map((card, i) => (
-              <div key={i} className={`min-w-[320px] aspect-[3/4] rounded-[2.5rem] overflow-hidden card-shadow relative shrink-0 bg-gradient-to-br ${card.gradient}`}>
-                <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
-                  <div className="w-20 h-20 rounded-3xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-6">
-                    {card.icon}
+          {(() => {
+            const cards = (content.labCards?.length ? content.labCards : LAB_CARDS).map(c => ({
+              ...c,
+              icon: c.iconName ? (() => { const I = getIcon(c.iconName); return <I size={36} className="text-white" />; })() : c.icon,
+            }));
+            return (
+              <motion.div
+                animate={{ x: [0, -(336 * cards.length)] }}
+                transition={{ duration: cards.length * 5, repeat: Infinity, ease: 'linear' }}
+                className="flex gap-6 px-4"
+              >
+                {[...cards, ...cards].map((card, i) => (
+                  <div key={i} className={`min-w-[320px] aspect-[3/4] rounded-[2.5rem] overflow-hidden card-shadow relative shrink-0 bg-gradient-to-br ${card.gradient}`}>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
+                      <div className="w-20 h-20 rounded-3xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-6">
+                        {card.icon}
+                      </div>
+                      <h3 className="text-xl font-bold text-white mb-2">{card.title}</h3>
+                      <p className="text-white/80 text-sm">{card.desc}</p>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-2">{card.title}</h3>
-                  <p className="text-white/80 text-sm">{card.desc}</p>
-                </div>
-              </div>
-            ))}
-          </motion.div>
+                ))}
+              </motion.div>
+            );
+          })()}
         </div>
       </div>
 

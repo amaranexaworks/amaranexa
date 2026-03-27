@@ -58,6 +58,7 @@ const TECH_STACK = [
 import { Hero, LifeAtAmara, StudentGallery, HeroTestimonials, PartnerSchools } from '../components/Hero';
 import { Perks } from '../components/Perks';
 import { CTA } from '../components/CTA';
+import { getHomeContent, getHomeContentSync } from '../utils/homeStore';
 
 const MENTORS = [
   { name: 'Arjun Mehta', role: 'AI & Machine Learning Lead', exp: '6 years at Google Brain', avatar: 'https://i.pravatar.cc/300?u=mentor1', tags: ['Python', 'TensorFlow', 'LLMs'] },
@@ -121,6 +122,13 @@ const BUILD_PROJECTS = [
 function BuildDemo() {
   const [selected, setSelected] = useState(null);
   const [step, setStep] = useState(0);
+  const [techStack, setTechStack] = useState(TECH_STACK);
+  useEffect(() => { getHomeContent().then(c => { if (c.techStack?.length) setTechStack(c.techStack); }); }, []);
+  useEffect(() => {
+    const sync = () => { if (!document.hidden) getHomeContent().then(c => { if (c.techStack?.length) setTechStack(c.techStack); }); };
+    document.addEventListener('visibilitychange', sync);
+    return () => document.removeEventListener('visibilitychange', sync);
+  }, []);
   const [running, setRunning] = useState(false);
   const intervalRef = useRef(null);
 
@@ -259,11 +267,11 @@ function BuildDemo() {
           <p className="text-center text-[10px] font-black text-slate-300 uppercase tracking-[0.35em] mb-5">Technologies our students master</p>
           <div className="relative flex overflow-hidden mb-3">
             <motion.div
-              animate={{ x: [0, `-${TECH_STACK.length * 160}px`] }}
+              animate={{ x: [0, `-${techStack.length * 160}px`] }}
               transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
               className="flex gap-3 shrink-0"
             >
-              {[...TECH_STACK, ...TECH_STACK, ...TECH_STACK].map((tech, i) => (
+              {[...techStack, ...techStack, ...techStack].map((tech, i) => (
                 <div key={i} className="flex items-center gap-2 bg-slate-50 border border-slate-100 rounded-2xl px-4 py-2.5 shrink-0 hover:border-brand-primary/30 transition-colors">
                   <span className="text-lg">{tech.icon}</span>
                   <span className="text-xs font-bold text-slate-600 whitespace-nowrap">{tech.name}</span>
@@ -273,11 +281,11 @@ function BuildDemo() {
           </div>
           <div className="relative flex overflow-hidden">
             <motion.div
-              animate={{ x: [`-${TECH_STACK.length * 80}px`, '0px'] }}
+              animate={{ x: [`-${techStack.length * 80}px`, '0px'] }}
               transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
               className="flex gap-3 shrink-0"
             >
-              {[...TECH_STACK.slice().reverse(), ...TECH_STACK.slice().reverse(), ...TECH_STACK.slice().reverse()].map((tech, i) => (
+              {[...techStack.slice().reverse(), ...techStack.slice().reverse(), ...techStack.slice().reverse()].map((tech, i) => (
                 <div key={i} className="flex items-center gap-2 bg-slate-50 border border-slate-100 rounded-2xl px-4 py-2.5 shrink-0 hover:border-brand-primary/30 transition-colors">
                   <span className="text-lg">{tech.icon}</span>
                   <span className="text-xs font-bold text-slate-600 whitespace-nowrap">{tech.name}</span>
@@ -292,6 +300,13 @@ function BuildDemo() {
 }
 
 function MeetMentors() {
+  const [mentors, setMentors] = useState(MENTORS);
+  useEffect(() => { getHomeContent().then(c => { if (c.mentors?.length) setMentors(c.mentors); }); }, []);
+  useEffect(() => {
+    const sync = () => { if (!document.hidden) getHomeContent().then(c => { if (c.mentors?.length) setMentors(c.mentors); }); };
+    document.addEventListener('visibilitychange', sync);
+    return () => document.removeEventListener('visibilitychange', sync);
+  }, []);
   return (
     <section className="py-24 px-8 bg-white">
       <div className="max-w-7xl mx-auto">
@@ -303,7 +318,7 @@ function MeetMentors() {
           <p className="text-slate-500 mt-4 text-lg max-w-xl mx-auto">Industry veterans who left big tech to build the next generation of creators.</p>
         </motion.div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {MENTORS.map((m, i) => (
+          {mentors.map((m, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 30 }}
@@ -337,6 +352,13 @@ function MeetMentors() {
 
 function FAQSection() {
   const [open, setOpen] = useState(null);
+  const [faqs, setFaqs] = useState(FAQS);
+  useEffect(() => { getHomeContent().then(c => { if (c.faqs?.length) setFaqs(c.faqs); }); }, []);
+  useEffect(() => {
+    const sync = () => { if (!document.hidden) getHomeContent().then(c => { if (c.faqs?.length) setFaqs(c.faqs); }); };
+    document.addEventListener('visibilitychange', sync);
+    return () => document.removeEventListener('visibilitychange', sync);
+  }, []);
   return (
     <section className="py-24 px-8 bg-white">
       <div className="max-w-3xl mx-auto">
@@ -347,7 +369,7 @@ function FAQSection() {
           <h2 className="text-5xl font-display font-bold text-slate-900">Frequently Asked</h2>
         </motion.div>
         <div className="space-y-3">
-          {FAQS.map((faq, i) => (
+          {faqs.map((faq, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 16 }}
