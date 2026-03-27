@@ -12,6 +12,7 @@ const blogRoutes = require('./src/routes/blog');
 const contentRoutes = require('./src/routes/content');
 const navlinkRoutes = require('./src/routes/navlinks');
 const mediaRoutes = require('./src/routes/media');
+const seedRoutes = require('./src/routes/seed');
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
@@ -55,6 +56,7 @@ app.use('/api/blog', blogRoutes);
 app.use('/api/content', contentRoutes);
 app.use('/api/navlinks', navlinkRoutes);
 app.use('/api/media', mediaRoutes);
+app.use('/api/seed', seedRoutes);
 
 // AI Chat endpoint
 app.post('/api/chat', async (req, res) => {
