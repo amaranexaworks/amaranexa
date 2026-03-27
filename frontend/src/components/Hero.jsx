@@ -5,6 +5,9 @@ import { ArrowRight, Cpu, Sparkles, BrainCircuit, Quote, X, Star, Trophy, Zap, P
 import { useNavigate } from 'react-router-dom';
 import { getHomeContent, getHomeContentSync } from '../utils/homeStore';
 
+const ICON_MAP = { Code, Bot, BrainCircuit, Gamepad2, Lightbulb, Monitor, Cpu, Rocket, Zap, Star, Trophy, Play };
+const getIcon = (name) => ICON_MAP[name] || Code;
+
 const LAB_CARDS = [
   { title: 'Coding Lab', desc: 'Students writing real code', gradient: 'from-blue-500 to-indigo-600', icon: <Code size={36} className="text-white" /> },
   { title: 'Robotics', desc: 'Building & programming robots', gradient: 'from-emerald-500 to-teal-600', icon: <Bot size={36} className="text-white" /> },
@@ -338,7 +341,7 @@ export const Hero = () => {
 
           <div className="text-sm font-semibold text-slate-400 mb-4 flex items-center justify-center gap-2">
             <span className="w-6 h-px bg-slate-300" />
-            Now teaching: <TypewriterText words={TYPEWRITER_WORDS} />
+            Now teaching: <TypewriterText words={content.typewriterWords || TYPEWRITER_WORDS} />
             <span className="w-6 h-px bg-slate-300" />
           </div>
 
@@ -346,7 +349,7 @@ export const Hero = () => {
             <span className="text-slate-900">{hero.headlineLine1}</span>{' '}
             <span style={{ background: 'linear-gradient(90deg, #2563eb, #0ea5e9)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{hero.headlineGradient}</span>
             <br />
-            <RotatingWord words={HERO_ROTATING_WORDS} />
+            <RotatingWord words={content.rotatingWords || HERO_ROTATING_WORDS} />
           </h1>
 
           <p className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed font-medium">

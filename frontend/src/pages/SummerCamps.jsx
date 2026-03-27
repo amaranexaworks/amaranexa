@@ -266,11 +266,11 @@ export const SummerCamps = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const camps = content.camps;
-  const activeCamp = camps[selectedCamp] ?? camps[0];
+  const camps = content?.camps || [];
+  const activeCamp = camps[selectedCamp] ?? camps[0] ?? {};
   const campColor = CAMP_COLORS[selectedCamp] ?? CAMP_COLORS[0];
-  const CampIcon = campColor.icon;
-  const target = parseStartDate(activeCamp.startDate);
+  const CampIcon = campColor?.icon;
+  const target = activeCamp?.startDate ? parseStartDate(activeCamp.startDate) : null;
   const { days, hours, minutes, seconds } = useCountdown(target);
 
   return (
@@ -300,7 +300,7 @@ export const SummerCamps = () => {
           </div>
           <div className="hidden md:flex items-center gap-8">
             {[{label:'Camps',href:'#camps'},{label:'Why Us',href:'#why'},{label:'Gallery',href:'#gallery'},{label:'Stories',href:'#stories'}].map((l) => (
-              <a key={l.label} href={l.href} className="text-sm font-semibold text-amber-800/60 hover:text-slate-900 transition-colors">{l.label}</a>
+              <a key={l.label} href={l.href} onClick={(e) => { e.preventDefault(); document.querySelector(l.href)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} className="text-sm font-semibold text-amber-800/60 hover:text-slate-900 transition-colors">{l.label}</a>
             ))}
           </div>
           <button className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:shadow-lg hover:shadow-amber-500/30 transition-all">
@@ -326,10 +326,10 @@ export const SummerCamps = () => {
               Immersive 5-day coding camps for students in grades 2–12. Robotics, AI, and Game Development — hands-on, no fluff.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <a href="#camps" className="bg-gradient-to-r from-amber-500 to-orange-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-105 transition-all flex items-center gap-2">
+              <a href="#camps" onClick={(e) => { e.preventDefault(); document.querySelector('#camps')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} className="bg-gradient-to-r from-amber-500 to-orange-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-105 transition-all flex items-center gap-2">
                 Choose Your Camp <ArrowUpRight size={20} />
               </a>
-              <a href="#gallery" className="bg-white border border-amber-200 text-slate-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-amber-50 hover:border-amber-300 transition-all flex items-center gap-2 shadow-sm">
+              <a href="#gallery" onClick={(e) => { e.preventDefault(); document.querySelector('#gallery')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} className="bg-white border border-amber-200 text-slate-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-amber-50 hover:border-amber-300 transition-all flex items-center gap-2 shadow-sm">
                 <Play size={18} className="fill-slate-700 text-slate-700" /> See Inside
               </a>
             </div>

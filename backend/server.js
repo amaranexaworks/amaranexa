@@ -45,8 +45,7 @@ app.use(cors({
 
 app.use(express.json({ limit: '50mb' }));
 
-// Serve uploaded files statically
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Media files are served from Supabase Storage (no local uploads directory needed)
 
 // Routes
 app.use('/api/auth', authRoutes);
