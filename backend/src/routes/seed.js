@@ -184,6 +184,8 @@ const DEFAULT_PAGES = {
       { id: 2, title: "Interactive Quizzes", desc: "Regular assessment through gamified quizzes to track student progress." },
       { id: 3, title: "Tech Exhibitions", desc: "Grand showcases where students present their AI and Robotics projects." },
     ],
+    eventsCount: "15+",
+    socialProofHeadline: "30+ schools trust our services for their students",
     contactHeadline: "Ready to Partner?",
     contactSubtitle: "Join the network of schools leading the tech revolution.",
   },

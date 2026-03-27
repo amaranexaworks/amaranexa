@@ -407,7 +407,7 @@ export const Schools = () => {
       {/* Social Proof */}
       <section className="py-14 bg-transparent relative z-10 overflow-hidden">
         <div className="max-w-7xl mx-auto px-8 text-center">
-          <h2 className="text-2xl font-bold text-white mb-12" dangerouslySetInnerHTML={{ __html: content.socialProofHeadline.replace(/(\d+\+)/, '<span class="text-[#EAB308]">$1</span>') }} />
+          <h2 className="text-2xl font-bold text-white mb-12" dangerouslySetInnerHTML={{ __html: (content.socialProofHeadline || '30+ schools trust our services for their students').replace(/(\d+\+)/, '<span class="text-[#EAB308]">$1</span>') }} />
         </div>
 
         {/* Floating Schools Marquee - Row 1 */}
