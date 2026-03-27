@@ -284,13 +284,14 @@ export const SummerCamps = () => {
       }`} style={{ background: 'rgba(255,251,235,0.92)', backdropFilter: 'blur(20px)' }}>
         <div className="max-w-7xl mx-auto px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <a href="/" className="flex items-center gap-3 group" onClick={(e) => { e.preventDefault(); window.location.href = '/'; }}>
-              <div className="bg-gradient-to-br from-amber-500 to-orange-600 p-2 rounded-xl">
+            <a href="/" className="flex items-center gap-2.5 group" onClick={(e) => { e.preventDefault(); window.location.href = '/'; }}>
+              <div className="bg-gradient-to-br from-brand-primary to-brand-secondary p-2 rounded-xl group-hover:scale-105 transition-transform shadow-lg">
                 <Terminal size={18} className="text-white" />
               </div>
-              <span className="font-display font-extrabold text-lg tracking-tight text-slate-900">
-                AMARA<span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-500">NEXA</span>
-              </span>
+              <div className="flex flex-col leading-none">
+                <span className="font-display font-extrabold text-lg tracking-tight text-slate-900">AMARA<span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary">NEXA</span></span>
+                <span className="text-[9px] font-bold tracking-[0.2em] text-slate-400 uppercase">AI Education Labs</span>
+              </div>
             </a>
             <div className="h-5 w-px bg-amber-200" />
             <a href="/" className="flex items-center gap-1.5 text-xs font-bold text-amber-700/60 hover:text-slate-900 transition-colors uppercase tracking-widest" onClick={(e) => { e.preventDefault(); window.location.href = '/'; }}>

@@ -24,13 +24,16 @@ export const Footer = () => (
     <div className="max-w-7xl mx-auto px-8 py-16 grid md:grid-cols-4 gap-12">
       {/* Brand */}
       <div className="col-span-2">
-        <div className="flex items-center gap-2 mb-5">
-          <div className="bg-gradient-to-br from-brand-primary to-brand-secondary p-1.5 rounded-lg">
-            <Terminal size={22} className="text-white" />
+        <div className="flex items-center gap-2.5 mb-5">
+          <div className="bg-gradient-to-br from-brand-primary to-brand-secondary p-2 rounded-xl shadow-lg">
+            <Terminal size={20} className="text-white" />
           </div>
-          <span className="font-display font-bold text-xl tracking-tight">
-            AMARA<span className="text-brand-secondary">NEXA</span>
-          </span>
+          <div className="flex flex-col leading-none">
+            <span className="font-display font-extrabold text-xl tracking-tight">
+              AMARA<span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary">NEXA</span>
+            </span>
+            <span className="text-[9px] font-bold tracking-[0.2em] text-slate-400 uppercase">AI Education Labs</span>
+          </div>
         </div>
         <p className="text-slate-400 max-w-sm leading-relaxed text-sm">
           Building the next generation of engineers, one school at a time. Professional labs, real incentives, and AI-first education.

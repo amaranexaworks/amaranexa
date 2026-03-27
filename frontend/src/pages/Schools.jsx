@@ -60,11 +60,14 @@ export const Schools = () => {
       <nav className="fixed top-0 left-0 right-0 backdrop-blur-md z-50 border-b border-white/5" style={{ background: 'rgba(9, 9, 11, 0.92)' }}>
         <div className="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
           <div className="flex items-center gap-8">
-            <Link to="/" className="flex items-center gap-2 group">
-              <div className="bg-gradient-to-br from-amber-500 to-orange-600 p-2 rounded-xl group-hover:scale-110 transition-transform">
+            <Link to="/" className="flex items-center gap-2.5 group">
+              <div className="bg-gradient-to-br from-brand-primary to-brand-secondary p-2 rounded-xl group-hover:scale-105 transition-transform shadow-lg">
                 <Terminal size={18} className="text-white" />
               </div>
-              <span className="font-display font-extrabold text-lg tracking-tight text-white">AMARA<span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">NEXA</span></span>
+              <div className="flex flex-col leading-none">
+                <span className="font-display font-extrabold text-lg tracking-tight text-white">AMARA<span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary">NEXA</span></span>
+                <span className="text-[9px] font-bold tracking-[0.2em] text-white/40 uppercase">AI Education Labs</span>
+              </div>
             </Link>
             <div className="h-6 w-px bg-white/10 hidden md:block" />
             <Link
