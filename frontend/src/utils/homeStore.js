@@ -143,10 +143,16 @@ const DEFAULT_HOME_CONTENT = {
   },
 };
 
+// In-memory cache so getHomeContentSync() returns the latest fetched data
+let _cache = null;
+
 export async function getHomeContent() {
   try {
     const content = await fetchPageContent('home');
-    if (content) return content;
+    if (content) {
+      _cache = content;
+      return content;
+    }
   } catch { /* fall through */ }
   return DEFAULT_HOME_CONTENT;
 }
@@ -154,6 +160,7 @@ export async function getHomeContent() {
 export async function saveHomeContent(content) {
   try {
     await savePageContent('home', content);
+    _cache = content; // keep cache in sync after save
   } catch (err) {
     console.error('saveHomeContent error:', err);
   }
@@ -166,7 +173,7 @@ export async function updateHomeSection(section, data) {
   return updated;
 }
 
-// Sync version for initial render
+// Sync version — returns cached data if already fetched, otherwise defaults
 export function getHomeContentSync() {
-  return DEFAULT_HOME_CONTENT;
+  return _cache || DEFAULT_HOME_CONTENT;
 }
