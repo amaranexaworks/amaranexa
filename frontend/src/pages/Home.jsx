@@ -421,7 +421,6 @@ export const Home = () => {
       <Perks />
       <HeroTestimonials />
       <PartnerSchools />
-      <MeetMentors />
       <FAQSection />
       <CTA />
     </div>
