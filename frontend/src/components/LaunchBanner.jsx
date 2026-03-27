@@ -70,7 +70,8 @@ function createConfetti(canvas) {
 }
 
 export default function LaunchCover({ children }) {
-  const [launched, setLaunched] = useState(false);
+  const alreadyLaunched = sessionStorage.getItem('amaranexa-launched') === 'true';
+  const [launched, setLaunched] = useState(alreadyLaunched);
   const [showWelcome, setShowWelcome] = useState(false);
   const canvasRef = useRef(null);
   const [count, setCount] = useState(null);
@@ -87,6 +88,7 @@ export default function LaunchCover({ children }) {
     }
     // count === 0, launch!
     setLaunched(true);
+    sessionStorage.setItem('amaranexa-launched', 'true');
     setShowWelcome(true);
     if (canvasRef.current) {
       createConfetti(canvasRef.current);
