@@ -29,16 +29,6 @@ const DEFAULT_HOME_CONTENT = {
       { id: 3, quote: "Seeing my child earn a stipend for a real-world project was a proud moment. This is real education.", author: "Anjali Gupta", role: "Parent of 9th Grader", avatar: "https://i.pravatar.cc/150?u=parent3", video: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" },
     ],
   },
-  features: {
-    title: "The Lab Ecosystem",
-    subtitle: "We don't just provide a room; we provide a complete professional infrastructure for the AI generation.",
-    items: [
-      { id: 1, title: "Professional Office Setup", desc: "We transform standard school rooms into high-end tech offices. Ergonomic furniture, high-speed fiber, and professional aesthetics to inspire real work.", size: "large" },
-      { id: 2, title: "RTX Laptops", desc: "Every student station is equipped with high-performance hardware capable of training local LLMs.", size: "small" },
-      { id: 3, title: "AI Curriculum", desc: "From prompt engineering to neural network architecture. Real-world skills for the 2030 economy.", size: "small" },
-      { id: 4, title: "Real-World Projects", desc: "Students don't just solve puzzles. They build actual tools for local businesses and startups, earning real stipends for their contributions.", size: "large" },
-    ],
-  },
   perks: {
     title: "Student Incentives",
     subtitle: "We reward innovation. Our students are treated like professional engineers from day one.",
@@ -46,14 +36,6 @@ const DEFAULT_HOME_CONTENT = {
       { id: 1, title: "Monthly Stipends", desc: "Students earn a basic stipend for maintaining 90% attendance and completing project milestones." },
       { id: 2, title: "Annual Prizes", desc: "Top performers in our annual exams receive high-end development laptops to continue their journey." },
       { id: 3, title: "Startup Incubation", desc: "Exceptional projects receive seed funding and mentorship to transform into real-world startups." },
-    ],
-  },
-  gallery: {
-    mainImage: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80',
-    cards: [
-      { image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=800&q=80', tag: 'Web Development', caption: 'From Zero to Live Website', sub: 'Students ship their first portfolio in just 4 weeks' },
-      { image: 'https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&w=800&q=80', tag: 'AI & Python', caption: 'Coding the Future of AI', sub: 'Training real models with Python & TensorFlow' },
-      { image: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&w=800&q=80', tag: 'Collaborative Learning', caption: 'Teamwork Makes the Dream Work', sub: 'Students pair-program, review code, and grow together' },
     ],
   },
   cta: {
@@ -90,12 +72,6 @@ const DEFAULT_HOME_CONTENT = {
     { name: 'Priya Reddy', grade: 'Grade 10', school: 'Oakridge Academy, Hyderabad', subject: 'Web Development', project: 'Launched her own portfolio website', quote: 'I built my first website in Week 3. My parents were speechless — it was live on the internet!', achievement: 'Student of the Month', emoji: '🌐' },
     { name: 'Rohan Menon', grade: 'Grade 9', school: 'Greenwood International, Bangalore', subject: 'Game Development', project: 'Created a 2D platformer game in Unity', quote: 'My game has 200+ plays on itch.io. I made that in just 6 weeks — unbelievable.', achievement: '200+ Game Downloads', emoji: '🎮' },
     { name: 'Sneha Kapoor', grade: 'Grade 7', school: 'Ryan International, Pune', subject: 'Robotics', project: 'Programmed an Arduino obstacle-avoiding robot', quote: 'My robot actually moves on its own now. I coded it myself using sensors and Arduino!', achievement: 'Science Fair 1st Place', emoji: '🤝' },
-  ],
-  mentors: [
-    { name: 'Arjun Mehta', role: 'AI & Machine Learning Lead', exp: '6 years at Google Brain', avatar: 'https://i.pravatar.cc/300?u=mentor1', tags: ['Python', 'TensorFlow', 'LLMs'] },
-    { name: 'Priya Nair', role: 'Full-Stack Web Expert', exp: '5 years at Flipkart', avatar: 'https://i.pravatar.cc/300?u=mentor2', tags: ['React', 'Node.js', 'UI/UX'] },
-    { name: 'Rahul Sinha', role: 'Robotics & Hardware', exp: '4 years at ISRO', avatar: 'https://i.pravatar.cc/300?u=mentor3', tags: ['Arduino', 'C++', 'IoT'] },
-    { name: 'Sneha Kapoor', role: 'Game Dev & Creative Tech', exp: '5 years at Ubisoft', avatar: 'https://i.pravatar.cc/300?u=mentor4', tags: ['Unity', 'C#', 'Game Design'] },
   ],
   faqs: [
     { q: 'What age group is Amara Nexa for?', a: 'Our programs are designed for students in Grade 5 through Grade 12 (ages 10–18). The curriculum scales with the student\'s level — beginners start with visual coding and HTML; advanced students dive into AI model training and full-stack apps.' },
@@ -135,7 +111,6 @@ const DEFAULT_HOME_CONTENT = {
       { icon: '✅', title: 'Model is classifying images!', code: '# 🎉 Accuracy: 94.2%\\n# Students built this in Week 6!' },
     ]},
   ],
-  blogCategories: ['All Posts', 'Robotics', 'Artificial Intelligence', 'Science', 'Web Development', 'Drone', 'Machine Learning', 'Coding for Kids', 'STEM Education', 'Future of Tech', 'Student Projects'],
   announcement: {
     enabled: true,
     text: 'Limited school partnerships open for 2026 —',

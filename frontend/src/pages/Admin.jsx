@@ -1426,19 +1426,14 @@ function HomepageSection() {
   const TABS = [
     { id: 'announcement', label: 'Announcement Bar' },
     { id: 'hero', label: 'Hero' },
-    { id: 'stats', label: 'Stats' },
-    { id: 'gallery', label: 'Gallery' },
-    { id: 'videos', label: 'Videos' },
+    { id: 'videos', label: 'Life at Amara' },
     { id: 'labcards', label: 'Lab Cards' },
     { id: 'testimonials', label: 'Testimonials' },
-    { id: 'features', label: 'Features' },
     { id: 'perks', label: 'Perks' },
-    { id: 'mentors', label: 'Mentors' },
     { id: 'students', label: 'Students' },
     { id: 'schools', label: 'Partner Schools' },
     { id: 'techstack', label: 'Tech Stack' },
     { id: 'faqs', label: 'FAQs' },
-    { id: 'blogcats', label: 'Blog Categories' },
     { id: 'cta', label: 'CTA' },
   ];
 
@@ -1462,19 +1457,14 @@ function HomepageSection() {
       </div>
       {activeTab === 'announcement' && <AnnouncementEditor data={content.announcement} onSave={d => handleSave('announcement', d)} />}
       {activeTab === 'hero' && <HeroEditor data={content.hero} onSave={d => handleSave('hero', d)} />}
-      {activeTab === 'stats' && <StatsEditor data={content.stats} onSave={d => handleSave('stats', d)} />}
-      {activeTab === 'gallery' && <GalleryEditor data={content.gallery} onSave={d => handleSave('gallery', d)} />}
       {activeTab === 'videos' && <VideosEditor data={content.lifeSection} onSave={d => handleSave('lifeSection', d)} />}
       {activeTab === 'labcards' && <LabCardsEditor data={content.labCards} onSave={d => handleSave('labCards', d)} />}
       {activeTab === 'testimonials' && <TestimonialsEditor data={content.testimonials} onSave={d => handleSave('testimonials', d)} />}
-      {activeTab === 'features' && <FeaturesEditor data={content.features} onSave={d => handleSave('features', d)} />}
       {activeTab === 'perks' && <PerksEditor data={content.perks} onSave={d => handleSave('perks', d)} />}
-      {activeTab === 'mentors' && <MentorsEditor data={content.mentors} onSave={d => handleSave('mentors', d)} />}
       {activeTab === 'students' && <StudentGalleryEditor data={content.studentGallery} onSave={d => handleSave('studentGallery', d)} />}
       {activeTab === 'schools' && <PartnerSchoolsEditor data={content.partnerSchools} onSave={d => handleSave('partnerSchools', d)} />}
       {activeTab === 'techstack' && <TechStackEditor data={content.techStack} onSave={d => handleSave('techStack', d)} />}
       {activeTab === 'faqs' && <FAQsEditor data={content.faqs} onSave={d => handleSave('faqs', d)} />}
-      {activeTab === 'blogcats' && <BlogCategoriesEditor data={content.blogCategories} onSave={d => handleSave('blogCategories', d)} />}
       {activeTab === 'cta' && <CTAEditor data={content.cta} onSave={d => handleSave('cta', d)} />}
     </>
   );
