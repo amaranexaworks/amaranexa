@@ -511,40 +511,52 @@ export const SummerCamps = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
+              transition={{ duration: 0.2 }}
               style={{
                 position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
                 zIndex: 999999,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 padding: '16px',
-                background: 'rgba(0,0,0,0.9)',
-                backdropFilter: 'blur(10px)',
+                background: 'rgba(0,0,0,0.5)',
               }}
               onClick={() => setVideoModal(null)}
             >
               <motion.div
                 key="video-modal-content"
-                initial={{ scale: 0.85, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.85, opacity: 0 }}
-                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                className="relative w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl bg-black"
-                style={{ aspectRatio: '16/9' }}
+                initial={{ scale: 0.85, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.85, opacity: 0, y: 20 }}
+                transition={{ type: 'spring', damping: 22, stiffness: 280 }}
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  maxWidth: '480px',
+                  borderRadius: '20px',
+                  overflow: 'hidden',
+                  boxShadow: '0 30px 80px rgba(0,0,0,0.6)',
+                  background: '#000',
+                  aspectRatio: '9/16',
+                }}
                 onClick={(e) => e.stopPropagation()}
               >
                 <iframe
                   src={`${videoModal}?autoplay=1&rel=0`}
                   title="Testimonial Video"
-                  className="w-full h-full border-0"
+                  style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 />
                 <button
                   onClick={() => setVideoModal(null)}
-                  className="absolute top-3 right-3 w-10 h-10 rounded-full bg-black/60 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
-                  style={{ zIndex: 10 }}
+                  style={{
+                    position: 'absolute', top: '10px', right: '10px',
+                    width: '32px', height: '32px', borderRadius: '50%',
+                    background: 'rgba(0,0,0,0.7)', border: '1px solid rgba(255,255,255,0.3)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    cursor: 'pointer', color: 'white', zIndex: 10,
+                  }}
                 >
-                  <X size={20} />
+                  <X size={16} />
                 </button>
               </motion.div>
             </motion.div>
