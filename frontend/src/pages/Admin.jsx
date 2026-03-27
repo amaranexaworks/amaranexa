@@ -27,6 +27,7 @@ const NAV_ITEMS = [
   { icon: GraduationCap, label: 'Schools Page', id: 'schoolspage' },
   { icon: Tent, label: 'Summer Camps', id: 'summerpage' },
   { icon: Newspaper, label: 'Blog Posts', id: 'blog' },
+  { icon: BookOpen, label: 'Blog Settings', id: 'blogpage' },
   { icon: Image, label: 'Media Gallery', id: 'media' },
 ];
 
@@ -1206,6 +1207,207 @@ function AnnouncementEditor({ data, onSave }) {
   );
 }
 
+// ── Camp Stats Editor ─────────────────────────────────────────────────────────
+function CampStatsEditor({ data, onSave }) {
+  const [stats, setStats] = useState(data || []);
+  const update = (i, key, val) => { const s = [...stats]; s[i] = { ...s[i], [key]: val }; setStats(s); };
+  return (
+    <div className="space-y-4">
+      <SectionHeader title="Camp Stats" desc="The 4 counter stats shown at the top of the Summer Camps page" />
+      {stats.map((s, i) => (
+        <EditorCard key={i} title={`Stat ${i + 1}`}>
+          <div className="grid grid-cols-3 gap-4">
+            <Field label="Value" type="number" value={s.value} onChange={v => update(i, 'value', parseInt(v) || 0)} />
+            <Field label="Suffix" value={s.suffix} onChange={v => update(i, 'suffix', v)} placeholder="+ or %" />
+            <Field label="Label" value={s.label} onChange={v => update(i, 'label', v)} />
+          </div>
+        </EditorCard>
+      ))}
+      <div className="flex justify-end"><SaveBtn onClick={() => onSave(stats)} /></div>
+    </div>
+  );
+}
+
+// ── Video Testimonials Editor (Summer Camps) ──────────────────────────────────
+function VideoTestimonialsEditor({ data, onSave }) {
+  const [items, setItems] = useState(data || []);
+  const update = (i, key, val) => { const s = [...items]; s[i] = { ...s[i], [key]: val }; setItems(s); };
+  const add = () => setItems([...items, { name: '', role: '', quote: '', avatar: '', thumb: '', video: '' }]);
+  const remove = (i) => setItems(items.filter((_, j) => j !== i));
+  return (
+    <div className="space-y-4">
+      <SectionHeader title="Video Testimonials" desc="Testimonial cards shown in the Stories section of Summer Camps" />
+      {items.map((t, i) => (
+        <EditorCard key={i} title={t.name || `Testimonial ${i + 1}`} onDelete={() => remove(i)}>
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Name" value={t.name} onChange={v => update(i, 'name', v)} />
+            <Field label="Role" value={t.role} onChange={v => update(i, 'role', v)} placeholder="Student, Grade 9" />
+          </div>
+          <Field label="Quote" value={t.quote} onChange={v => update(i, 'quote', v)} multiline />
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Avatar URL" value={t.avatar} onChange={v => update(i, 'avatar', v)} placeholder="https://images.unsplash.com/..." />
+            <Field label="Thumbnail URL" value={t.thumb} onChange={v => update(i, 'thumb', v)} placeholder="https://images.unsplash.com/..." />
+          </div>
+          {t.avatar && <img src={t.avatar} alt="" className="w-12 h-12 rounded-full object-cover" referrerPolicy="no-referrer" />}
+          <Field label="Video URL (embed)" value={t.video} onChange={v => update(i, 'video', v)} placeholder="https://www.youtube.com/embed/..." />
+        </EditorCard>
+      ))}
+      <button onClick={add} className="w-full py-3 border-2 border-dashed border-zinc-300 rounded-xl text-zinc-500 font-semibold hover:border-zinc-400 hover:text-zinc-700 transition-colors">+ Add Testimonial</button>
+      <div className="flex justify-end"><SaveBtn onClick={() => onSave(items)} /></div>
+    </div>
+  );
+}
+
+// ── Advantages Editor (Summer Camps) ──────────────────────────────────────────
+function AdvantagesEditor({ data, onSave }) {
+  const [items, setItems] = useState(data || []);
+  const update = (i, key, val) => { const s = [...items]; s[i] = { ...s[i], [key]: val }; setItems(s); };
+  const add = () => setItems([...items, { title: '', desc: '' }]);
+  const remove = (i) => setItems(items.filter((_, j) => j !== i));
+  return (
+    <div className="space-y-4">
+      <SectionHeader title="Advantages" desc="Why choose us cards shown on Summer Camps page" />
+      {items.map((adv, i) => (
+        <EditorCard key={i} title={adv.title || `Advantage ${i + 1}`} onDelete={() => remove(i)}>
+          <Field label="Title" value={adv.title} onChange={v => update(i, 'title', v)} />
+          <Field label="Description" value={adv.desc} onChange={v => update(i, 'desc', v)} multiline />
+        </EditorCard>
+      ))}
+      <button onClick={add} className="w-full py-3 border-2 border-dashed border-zinc-300 rounded-xl text-zinc-500 font-semibold hover:border-zinc-400 hover:text-zinc-700 transition-colors">+ Add Advantage</button>
+      <div className="flex justify-end"><SaveBtn onClick={() => onSave(items)} /></div>
+    </div>
+  );
+}
+
+// ── How It Works Editor (Schools) ─────────────────────────────────────────────
+function HowItWorksEditor({ data, onSave }) {
+  const [items, setItems] = useState(data || []);
+  const update = (i, key, val) => { const s = [...items]; s[i] = { ...s[i], [key]: val }; setItems(s); };
+  const add = () => setItems([...items, { emoji: '', title: '', desc: '' }]);
+  const remove = (i) => setItems(items.filter((_, j) => j !== i));
+  return (
+    <div className="space-y-4">
+      <SectionHeader title="How It Works" desc="The 3-step process shown on the Schools page" />
+      {items.map((step, i) => (
+        <EditorCard key={i} title={step.title || `Step ${i + 1}`} onDelete={() => remove(i)}>
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Emoji" value={step.emoji} onChange={v => update(i, 'emoji', v)} placeholder="🤝" />
+            <Field label="Title" value={step.title} onChange={v => update(i, 'title', v)} />
+          </div>
+          <Field label="Description" value={step.desc} onChange={v => update(i, 'desc', v)} multiline />
+        </EditorCard>
+      ))}
+      <button onClick={add} className="w-full py-3 border-2 border-dashed border-zinc-300 rounded-xl text-zinc-500 font-semibold hover:border-zinc-400 hover:text-zinc-700 transition-colors">+ Add Step</button>
+      <div className="flex justify-end"><SaveBtn onClick={() => onSave(items)} /></div>
+    </div>
+  );
+}
+
+// ── Success Stories Editor (Schools) ──────────────────────────────────────────
+function SuccessStoriesEditor({ data, onSave }) {
+  const [items, setItems] = useState(data || []);
+  const update = (i, key, val) => { const s = [...items]; s[i] = { ...s[i], [key]: val }; setItems(s); };
+  const add = () => setItems([...items, { school: '', location: '', students: '', image: '', video: '' }]);
+  const remove = (i) => setItems(items.filter((_, j) => j !== i));
+  return (
+    <div className="space-y-4">
+      <SectionHeader title="Success Stories" desc="School transformation cards shown on the Schools page" />
+      {items.map((s, i) => (
+        <EditorCard key={i} title={s.school || `Story ${i + 1}`} onDelete={() => remove(i)}>
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="School Name" value={s.school} onChange={v => update(i, 'school', v)} />
+            <Field label="Location" value={s.location} onChange={v => update(i, 'location', v)} placeholder="Hyderabad" />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Students Count" value={s.students} onChange={v => update(i, 'students', v)} placeholder="500+" />
+            <Field label="Video URL" value={s.video} onChange={v => update(i, 'video', v)} placeholder="https://www.youtube.com/..." />
+          </div>
+          <Field label="Image URL" value={s.image} onChange={v => update(i, 'image', v)} placeholder="https://images.unsplash.com/..." />
+          {s.image && <img src={s.image} alt="" className="h-28 w-full rounded-xl object-cover" referrerPolicy="no-referrer" />}
+        </EditorCard>
+      ))}
+      <button onClick={add} className="w-full py-3 border-2 border-dashed border-zinc-300 rounded-xl text-zinc-500 font-semibold hover:border-zinc-400 hover:text-zinc-700 transition-colors">+ Add Story</button>
+      <div className="flex justify-end"><SaveBtn onClick={() => onSave(items)} /></div>
+    </div>
+  );
+}
+
+// ── School Testimonials Editor ────────────────────────────────────────────────
+function SchoolTestimonialsEditor({ data, onSave }) {
+  const [items, setItems] = useState(data || []);
+  const update = (i, key, val) => { const s = [...items]; s[i] = { ...s[i], [key]: val }; setItems(s); };
+  const add = () => setItems([...items, { name: '', role: '', quote: '', image: '', video: '' }]);
+  const remove = (i) => setItems(items.filter((_, j) => j !== i));
+  return (
+    <div className="space-y-4">
+      <SectionHeader title="School Testimonials" desc="Principal and coordinator testimonials on the Schools page" />
+      {items.map((t, i) => (
+        <EditorCard key={i} title={t.name || `Testimonial ${i + 1}`} onDelete={() => remove(i)}>
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Name" value={t.name} onChange={v => update(i, 'name', v)} />
+            <Field label="Role" value={t.role} onChange={v => update(i, 'role', v)} placeholder="Principal, DPS Hyderabad" />
+          </div>
+          <Field label="Quote" value={t.quote} onChange={v => update(i, 'quote', v)} multiline />
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Image URL" value={t.image} onChange={v => update(i, 'image', v)} placeholder="https://i.pravatar.cc/150?u=..." />
+            <Field label="Video URL" value={t.video} onChange={v => update(i, 'video', v)} placeholder="https://www.youtube.com/..." />
+          </div>
+          {t.image && <img src={t.image} alt="" className="w-12 h-12 rounded-full object-cover" referrerPolicy="no-referrer" />}
+        </EditorCard>
+      ))}
+      <button onClick={add} className="w-full py-3 border-2 border-dashed border-zinc-300 rounded-xl text-zinc-500 font-semibold hover:border-zinc-400 hover:text-zinc-700 transition-colors">+ Add Testimonial</button>
+      <div className="flex justify-end"><SaveBtn onClick={() => onSave(items)} /></div>
+    </div>
+  );
+}
+
+// ── Services Dropdown Editor (Schools) ────────────────────────────────────────
+function ServicesDropdownEditor({ data, onSave }) {
+  const [items, setItems] = useState(data || []);
+  const update = (i, key, val) => { const s = [...items]; s[i] = { ...s[i], [key]: val }; setItems(s); };
+  const add = () => setItems([...items, { label: '', desc: '' }]);
+  const remove = (i) => setItems(items.filter((_, j) => j !== i));
+  return (
+    <div className="space-y-4">
+      <SectionHeader title="Services Dropdown" desc="Items shown in the Services nav dropdown on the Schools page" />
+      {items.map((item, i) => (
+        <EditorCard key={i} title={item.label || `Service ${i + 1}`} onDelete={() => remove(i)}>
+          <Field label="Label" value={item.label} onChange={v => update(i, 'label', v)} placeholder="National Competitions" />
+          <Field label="Description" value={item.desc} onChange={v => update(i, 'desc', v)} placeholder="Inter-school tech fests & robotics challenges" />
+        </EditorCard>
+      ))}
+      <button onClick={add} className="w-full py-3 border-2 border-dashed border-zinc-300 rounded-xl text-zinc-500 font-semibold hover:border-zinc-400 hover:text-zinc-700 transition-colors">+ Add Service</button>
+      <div className="flex justify-end"><SaveBtn onClick={() => onSave(items)} /></div>
+    </div>
+  );
+}
+
+// ── Blog Page Section ─────────────────────────────────────────────────────────
+function BlogPageSection() {
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getPagesContent().then(p => { setContent(p.blog || {}); setLoading(false); });
+  }, []);
+
+  const save = async (data) => {
+    const updated = await updatePage('blog', data);
+    setContent(updated.blog || {});
+  };
+
+  if (loading || !content) return <div className="text-zinc-400 py-20 text-center">Loading blog settings...</div>;
+
+  return (
+    <>
+      <div className="flex items-center justify-between mb-8">
+        <div><h1 className="text-2xl font-bold">Blog Page</h1><p className="text-zinc-500 text-sm">Edit categories shown on /blog</p></div>
+      </div>
+      <BlogCategoriesEditor data={content.categories} onSave={cats => save({ ...content, categories: cats })} />
+    </>
+  );
+}
+
 // ── Homepage Section ──────────────────────────────────────────────────────────
 function HomepageSection() {
   const [activeTab, setActiveTab] = useState('hero');
@@ -1403,9 +1605,13 @@ function SchoolsPageSection() {
 
   const TABS = [
     { id: 'hero', label: 'Hero' },
+    { id: 'howitworks', label: 'How It Works' },
     { id: 'labs', label: 'Labs' },
+    { id: 'successstories', label: 'Success Stories' },
+    { id: 'schooltestimonials', label: 'Testimonials' },
     { id: 'products', label: 'Products' },
     { id: 'services', label: 'Services' },
+    { id: 'servicesdropdown', label: 'Services Dropdown' },
     { id: 'contact', label: 'Contact' },
   ];
 
@@ -1422,6 +1628,22 @@ function SchoolsPageSection() {
           </button>
         ))}
       </div>
+
+      {activeTab === 'howitworks' && (
+        <HowItWorksEditor data={content.howItWorks} onSave={d => save({ ...content, howItWorks: d })} />
+      )}
+
+      {activeTab === 'successstories' && (
+        <SuccessStoriesEditor data={content.successStories} onSave={d => save({ ...content, successStories: d })} />
+      )}
+
+      {activeTab === 'schooltestimonials' && (
+        <SchoolTestimonialsEditor data={content.schoolTestimonials} onSave={d => save({ ...content, schoolTestimonials: d })} />
+      )}
+
+      {activeTab === 'servicesdropdown' && (
+        <ServicesDropdownEditor data={content.servicesDropdown} onSave={d => save({ ...content, servicesDropdown: d })} />
+      )}
 
       {activeTab === 'hero' && (
         <div className="space-y-6">
@@ -1522,6 +1744,9 @@ function SummerCampsPageSection() {
 
   const TABS = [
     { id: 'camps', label: 'Camps' },
+    { id: 'campstats', label: 'Camp Stats' },
+    { id: 'advantages', label: 'Advantages' },
+    { id: 'videotestimonials', label: 'Video Testimonials' },
     { id: 'benefits', label: 'Benefits' },
     { id: 'testimonials', label: 'Testimonials' },
   ];
@@ -1577,6 +1802,18 @@ function SummerCampsPageSection() {
           </button>
         ))}
       </div>
+
+      {activeTab === 'campstats' && (
+        <CampStatsEditor data={content.campStats} onSave={d => save({ ...content, campStats: d })} />
+      )}
+
+      {activeTab === 'advantages' && (
+        <AdvantagesEditor data={content.advantages} onSave={d => save({ ...content, advantages: d })} />
+      )}
+
+      {activeTab === 'videotestimonials' && (
+        <VideoTestimonialsEditor data={content.videoTestimonials} onSave={d => save({ ...content, videoTestimonials: d })} />
+      )}
 
       {activeTab === 'camps' && (
         <div className="space-y-6">
@@ -1798,6 +2035,7 @@ export const Admin = () => {
         {activeSection === 'schoolspage' && <SchoolsPageSection />}
         {activeSection === 'summerpage' && <SummerCampsPageSection />}
         {activeSection === 'blog' && <BlogSection />}
+        {activeSection === 'blogpage' && <BlogPageSection />}
         {activeSection === 'media' && <MediaGallerySection />}
       </main>
     </div>

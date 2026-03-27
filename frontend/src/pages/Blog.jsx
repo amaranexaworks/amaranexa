@@ -2,44 +2,41 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Search, ChevronDown, MoreVertical, MessageSquare, Heart } from 'lucide-react';
 import { getPosts, getPostsSync } from '../utils/blogStore';
-
-const CATEGORIES = [
-  "All Posts",
-  "Robotics",
-  "Artificial Intelligence",
-  "Science",
-  "Web Development",
-  "Drone"
-];
-
-const MORE_CATEGORIES = [
-  "Machine Learning",
-  "Coding for Kids",
-  "STEM Education",
-  "Future of Tech",
-  "Student Projects"
-];
-
-const ALL_CATEGORIES = [...CATEGORIES.slice(1), ...MORE_CATEGORIES];
+import { getPagesContent, getPagesContentSync } from '../utils/pagesStore';
 
 export const Blog = () => {
   const [posts, setPosts] = useState([]);
   const [activeCategory, setActiveCategory] = useState("All Posts");
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [allCategories, setAllCategories] = useState(
+    getPagesContentSync().blog?.categories || ['All Posts', 'Robotics', 'Artificial Intelligence', 'Science', 'Web Development', 'Drone', 'Machine Learning', 'Coding for Kids', 'STEM Education', 'Future of Tech', 'Student Projects']
+  );
 
   useEffect(() => {
     getPosts().then(setPosts);
+    getPagesContent().then(p => {
+      if (p.blog?.categories?.length) setAllCategories(p.blog.categories);
+    });
   }, []);
 
-  // Re-sync when tab becomes visible (admin may have edited posts)
+  // Re-sync when tab becomes visible (admin may have edited posts or categories)
   useEffect(() => {
     const handleVisibility = () => {
-      if (!document.hidden) getPosts().then(setPosts);
+      if (!document.hidden) {
+        getPosts().then(setPosts);
+        getPagesContent().then(p => {
+          if (p.blog?.categories?.length) setAllCategories(p.blog.categories);
+        });
+      }
     };
     document.addEventListener('visibilitychange', handleVisibility);
     return () => document.removeEventListener('visibilitychange', handleVisibility);
   }, []);
+
+  // First 6 items as main tabs, rest in "More" dropdown
+  const mainCategories = allCategories.slice(0, 6);
+  const moreCategories = allCategories.slice(6);
 
   const filteredPosts = posts.filter(post => {
     const matchesCategory =
@@ -56,7 +53,7 @@ export const Blog = () => {
     setIsMoreOpen(false);
   };
 
-  const isMoreActive = MORE_CATEGORIES.includes(activeCategory);
+  const isMoreActive = moreCategories.includes(activeCategory);
 
   return (
     <div className="pt-20 bg-white min-h-screen">
@@ -66,7 +63,7 @@ export const Blog = () => {
 
           {/* Scrollable category buttons */}
           <div className="flex items-center gap-1 overflow-x-auto no-scrollbar min-w-0">
-            {CATEGORIES.map((cat) => (
+            {mainCategories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => handleCategorySelect(cat)}
@@ -82,7 +79,7 @@ export const Blog = () => {
           </div>
 
           {/* More Dropdown */}
-          <div className="relative shrink-0 ml-2">
+          {moreCategories.length > 0 && <div className="relative shrink-0 ml-2">
             <button
               onClick={() => setIsMoreOpen(v => !v)}
               className={`flex items-center gap-1 text-sm font-semibold whitespace-nowrap px-4 py-1.5 rounded-full transition-all ${
@@ -109,7 +106,7 @@ export const Blog = () => {
                     transition={{ duration: 0.15 }}
                     className="absolute top-full left-0 mt-2 w-52 bg-white border border-slate-100 shadow-2xl rounded-2xl py-2 z-20"
                   >
-                    {MORE_CATEGORIES.map((cat) => (
+                    {moreCategories.map((cat) => (
                       <button
                         key={cat}
                         onClick={() => handleCategorySelect(cat)}
@@ -126,7 +123,7 @@ export const Blog = () => {
                 </>
               )}
             </AnimatePresence>
-          </div>
+          </div>}
 
           {/* Divider */}
           <div className="w-px h-5 bg-slate-200 mx-6 shrink-0" />

@@ -25,11 +25,6 @@ const PILL_COLORS = [
   'bg-indigo-500/20 border-indigo-500/40 text-indigo-300',
 ];
 
-const SERVICES_DROPDOWN = [
-  { label: 'National Competitions', desc: 'Inter-school tech fests & robotics challenges' },
-  { label: 'Interactive Quizzes', desc: 'Gamified assessments to track student progress' },
-  { label: 'Tech Exhibitions', desc: 'Grand showcases for students to present projects' },
-];
 
 export const Schools = () => {
   const [showMeetingForm, setShowMeetingForm] = useState(false);
@@ -109,7 +104,7 @@ export const Schools = () => {
                     className="absolute top-full right-0 mt-3 w-72 rounded-2xl border border-white/10 shadow-2xl overflow-hidden"
                     style={{ background: 'rgba(9,9,11,0.98)', backdropFilter: 'blur(20px)' }}
                   >
-                    {SERVICES_DROPDOWN.map((item, i) => (
+                    {(content.servicesDropdown || getPagesContentSync().schools.servicesDropdown || []).map((item, i) => (
                       <a
                         key={i}
                         href="#services"
@@ -192,11 +187,13 @@ export const Schools = () => {
           </motion.div>
           <div className="grid md:grid-cols-3 gap-8 relative">
             <div className="hidden md:block absolute top-14 left-[22%] right-[22%] h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-            {[
-              { emoji: '🤝', title: 'School Partners With Us', bg: 'linear-gradient(135deg,#dbeafe,#bfdbfe)', desc: 'Your school signs a partnership agreement. We handle everything — hardware specs, curriculum, staffing. No upfront investment needed.' },
-              { emoji: '🏗️', title: 'We Build the Lab', bg: 'linear-gradient(135deg,#fef3c7,#fde68a)', desc: 'Our team installs high-speed fiber, ergonomic workstations, and RTX laptops inside your existing classroom. Lab is live in 7 days.' },
-              { emoji: '🚀', title: 'Students Start Building', bg: 'linear-gradient(135deg,#d1fae5,#a7f3d0)', desc: 'Professional mentors arrive on Day 1. Students immediately work on real AI and coding projects — no filler, no theory-only classes.' },
-            ].map((step, i) => (
+            {(() => {
+              const HOW_IT_WORKS_BG = [
+                'linear-gradient(135deg,#dbeafe,#bfdbfe)',
+                'linear-gradient(135deg,#fef3c7,#fde68a)',
+                'linear-gradient(135deg,#d1fae5,#a7f3d0)',
+              ];
+              return (content.howItWorks || getPagesContentSync().schools.howItWorks || []).map((step, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 30 }}
@@ -206,14 +203,15 @@ export const Schools = () => {
                 className="bg-white/5 rounded-[2.5rem] border border-white/10 p-8 hover:border-white/20 transition-all hover:-translate-y-1 relative overflow-hidden"
               >
                 <div className="absolute top-6 right-7 text-6xl font-black text-white/5 select-none">0{i + 1}</div>
-                <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 text-2xl" style={{ background: step.bg }}>
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 text-2xl" style={{ background: HOW_IT_WORKS_BG[i % HOW_IT_WORKS_BG.length] }}>
                   {step.emoji}
                 </div>
                 <h3 className="text-xl font-black text-white mb-3">{step.title}</h3>
                 <p className="text-slate-400 text-sm leading-relaxed">{step.desc}</p>
                 <div className="mt-6 w-8 h-1 rounded-full bg-gradient-to-r from-blue-500 to-purple-500" />
               </motion.div>
-            ))}
+            ));
+            })()}
           </div>
         </div>
       </section>
@@ -262,12 +260,13 @@ export const Schools = () => {
             <p className="text-slate-400 mt-4 text-lg max-w-2xl mx-auto">Real labs. Real schools. Real impact on thousands of students across India.</p>
           </motion.div>
 
+          {(() => {
+            const SUCCESS_STORY_COLORS = ['#3b82f6', '#8b5cf6', '#06b6d4'];
+            return (
           <div className="grid md:grid-cols-3 gap-7">
-            {[
-              { image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=600&q=80', school: 'Delhi Public School', location: 'Hyderabad', students: '500+', video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', color: '#3b82f6' },
-              { image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80', school: 'Narayana School', location: 'Vizag', students: '350+', video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', color: '#8b5cf6' },
-              { image: 'https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=600&q=80', school: 'Sri Chaitanya School', location: 'Chennai', students: '420+', video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', color: '#06b6d4' },
-            ].map((item, i) => (
+            {(content.successStories || getPagesContentSync().schools.successStories || []).map((item, i) => {
+              const color = SUCCESS_STORY_COLORS[i % SUCCESS_STORY_COLORS.length];
+              return (
               <motion.a
                 key={i}
                 href={item.video}
@@ -281,7 +280,7 @@ export const Schools = () => {
                 className="group block rounded-3xl overflow-hidden relative bg-slate-800/60"
               >
                 {/* Colored top border accent */}
-                <div className="absolute top-0 left-0 right-0 h-1 z-10" style={{ background: item.color }} />
+                <div className="absolute top-0 left-0 right-0 h-1 z-10" style={{ background: color }} />
 
                 {/* Image */}
                 <div className="h-52 overflow-hidden relative">
@@ -302,20 +301,23 @@ export const Schools = () => {
                       <h3 className="text-lg font-bold text-white mb-0.5">{item.school}</h3>
                       <p className="text-slate-500 text-sm">{item.location}</p>
                     </div>
-                    <div className="px-3 py-1.5 rounded-lg text-xs font-bold" style={{ background: `${item.color}15`, color: item.color, border: `1px solid ${item.color}30` }}>
+                    <div className="px-3 py-1.5 rounded-lg text-xs font-bold" style={{ background: `${color}15`, color: color, border: `1px solid ${color}30` }}>
                       {item.students}
                     </div>
                   </div>
                   <div className="flex items-center justify-between pt-3 border-t border-white/8">
                     <span className="text-slate-500 text-xs">Students impacted</span>
-                    <span className="text-xs font-semibold flex items-center gap-1 transition-colors" style={{ color: item.color }}>
+                    <span className="text-xs font-semibold flex items-center gap-1 transition-colors" style={{ color: color }}>
                       Watch Story <ArrowUpRight size={12} />
                     </span>
                   </div>
                 </div>
               </motion.a>
-            ))}
+              );
+            })}
           </div>
+            );
+          })()}
         </div>
       </section>
 
@@ -338,12 +340,17 @@ export const Schools = () => {
           </motion.div>
 
           {/* 3-column grid */}
+          {(() => {
+            const TESTIMONIAL_GRADIENTS = [
+              'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+              'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+            ];
+            return (
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { name: 'Dr. Kavitha Reddy', role: 'Principal, DPS Hyderabad', quote: 'Students who once dreaded computer class now stay back after school to work on AI projects.', image: 'https://i.pravatar.cc/150?u=principal1', video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', accent: '#a78bfa' },
-              { name: 'Mr. Rajesh Nair', role: 'Coordinator, Narayana Vizag', quote: 'Enrollment inquiries doubled after we showcased the lab at our annual day.', image: 'https://i.pravatar.cc/150?u=principal2', video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', accent: '#f472b6' },
-              { name: 'Mrs. Sunita Iyer', role: 'Director, Sri Chaitanya Chennai', quote: 'Within 10 days we had a fully operational lab. Students built their first robot in Week 2.', image: 'https://i.pravatar.cc/150?u=principal3', video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', accent: '#38bdf8' },
-            ].map((t, i) => (
+            {(content.schoolTestimonials || getPagesContentSync().schools.schoolTestimonials || []).map((t, i) => {
+              const gradient = TESTIMONIAL_GRADIENTS[i % TESTIMONIAL_GRADIENTS.length];
+              return (
               <motion.a
                 key={i}
                 href={t.video}
@@ -355,7 +362,7 @@ export const Schools = () => {
                 transition={{ duration: 0.5, delay: i * 0.12 }}
                 whileHover={{ y: -8, scale: 1.02 }}
                 className="group block rounded-3xl overflow-hidden relative"
-                style={{ background: t.gradient }}
+                style={{ background: gradient }}
               >
                 {/* Decorative circles */}
                 <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-white/10 blur-sm" />
@@ -398,8 +405,11 @@ export const Schools = () => {
                   </div>
                 </div>
               </motion.a>
-            ))}
+              );
+            })}
           </div>
+            );
+          })()}
         </div>
       </section>
 

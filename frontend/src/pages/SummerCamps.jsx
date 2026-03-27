@@ -65,12 +65,7 @@ const CAMP_COLORS = [
   { accent: '#F59E0B', bg: 'from-amber-500 to-orange-600', light: 'bg-amber-50 text-amber-600 border-amber-200', icon: Gamepad2 },
 ];
 
-const STATS = [
-  { value: 5000, suffix: '+', label: 'Students Enrolled', icon: Users },
-  { value: 98, suffix: '%', label: 'Parent Satisfaction', icon: Trophy },
-  { value: 12, suffix: '+', label: 'Camp Tracks', icon: BookOpen },
-  { value: 6, suffix: '+', label: 'Cities', icon: Globe },
-];
+const STAT_ICONS = [Users, Trophy, BookOpen, Globe];
 
 const GALLERY_IMAGES = [
   { src: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=600&q=80', label: 'Robotics Lab', span: 'row-span-2' },
@@ -80,19 +75,20 @@ const GALLERY_IMAGES = [
   { src: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80', label: 'Team Projects', span: '' },
 ];
 
-const VIDEO_TESTIMONIALS = [
-  { name: 'Arjun Sharma', role: 'Student, Grade 9', quote: 'I built my first AI model in just 5 days. This camp changed how I think about technology.', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', thumb: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ', gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', accent: '#a78bfa' },
-  { name: 'Priya Nair', role: 'Parent of Grade 7 Student', quote: 'My daughter came back confident, creative, and with a working robot she built herself. Worth every rupee.', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', thumb: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=600&q=80', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ', gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', accent: '#f472b6' },
-  { name: 'Karan Mehta', role: 'Student, Grade 11', quote: 'The Game Dev camp was intense but amazing. I shipped my first Unity game and it is on my portfolio now.', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80', thumb: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ', gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', accent: '#38bdf8' },
+const VIDEO_TESTIMONIAL_GRADIENTS = [
+  { gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', accent: '#a78bfa' },
+  { gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', accent: '#f472b6' },
+  { gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', accent: '#38bdf8' },
 ];
 
-const ADVANTAGES = [
-  { icon: Rocket, title: 'Real Projects, Day 1', desc: 'No boring theory. Students dive straight into building real products — robots, apps, and games from Day 1.', color: 'text-blue-600', bg: 'bg-blue-50' },
-  { icon: Award, title: 'IITian Mentors', desc: 'Every batch is led by IITians and industry professionals who know how to make complex topics simple and fun.', color: 'text-purple-600', bg: 'bg-purple-50' },
-  { icon: Trophy, title: 'National Competitions', desc: 'Top performers get fast-tracked to national tech fests and robotics championships across India.', color: 'text-amber-600', bg: 'bg-amber-50' },
-  { icon: Users, title: 'Small Batch Sizes', desc: 'Max 15 students per batch ensures every child gets individual attention and progresses at their own pace.', color: 'text-emerald-600', bg: 'bg-emerald-50' },
-  { icon: BookOpen, title: 'Certificate + Portfolio', desc: 'Every student earns a verified certificate and leaves with a professional portfolio of completed projects.', color: 'text-rose-600', bg: 'bg-rose-50' },
-  { icon: Globe, title: 'Pan-India Community', desc: 'Join a network of 5000+ young innovators, access alumni events, workshops, and mentorship beyond camp.', color: 'text-cyan-600', bg: 'bg-cyan-50' },
+const ADVANTAGE_ICONS = [Rocket, Award, Trophy, Users, BookOpen, Globe];
+const ADVANTAGE_STYLES = [
+  { color: 'text-blue-600', bg: 'bg-blue-50' },
+  { color: 'text-purple-600', bg: 'bg-purple-50' },
+  { color: 'text-amber-600', bg: 'bg-amber-50' },
+  { color: 'text-emerald-600', bg: 'bg-emerald-50' },
+  { color: 'text-rose-600', bg: 'bg-rose-50' },
+  { color: 'text-cyan-600', bg: 'bg-cyan-50' },
 ];
 
 // ── Camp Carousel ──
@@ -341,13 +337,13 @@ export const SummerCamps = () => {
       {/* ── STATS ── */}
       <section className="py-12 px-8 border-y border-amber-200/50 bg-amber-50/50">
         <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
-          {STATS.map((s, i) => {
-            const Icon = s.icon;
+          {(content?.campStats || []).map((s, i) => {
+            const Icon = STAT_ICONS[i % STAT_ICONS.length];
             return (
               <motion.div key={s.label} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="text-center">
                 <Icon size={22} className="text-amber-600 mx-auto mb-2" />
                 <div className="text-3xl lg:text-4xl font-display font-extrabold text-slate-900 mb-1">
-                  <AnimCounter target={s.value} suffix={s.suffix} />
+                  <AnimCounter target={Number(s.value)} suffix={s.suffix} />
                 </div>
                 <p className="text-slate-500 text-sm font-medium">{s.label}</p>
               </motion.div>
@@ -379,8 +375,9 @@ export const SummerCamps = () => {
             <p className="text-slate-500 mt-3 text-lg max-w-xl mx-auto">Everything designed so your child leaves with skills, confidence, and something to show.</p>
           </motion.div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {ADVANTAGES.map((adv, i) => {
-              const Icon = adv.icon;
+            {(content?.advantages || []).map((adv, i) => {
+              const Icon = ADVANTAGE_ICONS[i % ADVANTAGE_ICONS.length];
+              const style = ADVANTAGE_STYLES[i % ADVANTAGE_STYLES.length];
               return (
                 <motion.div
                   key={adv.title}
@@ -390,8 +387,8 @@ export const SummerCamps = () => {
                   transition={{ delay: i * 0.08, duration: 0.5 }}
                   className="bg-white border border-amber-200/60 rounded-[2rem] p-7 hover:border-amber-300 hover:-translate-y-1 hover:shadow-lg transition-all group"
                 >
-                  <div className={`w-12 h-12 rounded-2xl ${adv.bg} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform`}>
-                    <Icon size={22} className={adv.color} />
+                  <div className={`w-12 h-12 rounded-2xl ${style.bg} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform`}>
+                    <Icon size={22} className={style.color} />
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 mb-2">{adv.title}</h3>
                   <p className="text-slate-500 text-sm leading-relaxed">{adv.desc}</p>
@@ -451,7 +448,9 @@ export const SummerCamps = () => {
 
           {/* Video testimonial cards — gradient style */}
           <div className="grid md:grid-cols-3 gap-6">
-            {VIDEO_TESTIMONIALS.map((t, i) => (
+            {(content?.videoTestimonials || []).map((t, i) => {
+              const gradStyle = VIDEO_TESTIMONIAL_GRADIENTS[i % VIDEO_TESTIMONIAL_GRADIENTS.length];
+              return (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 30 }}
@@ -459,7 +458,7 @@ export const SummerCamps = () => {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
                 className="relative rounded-[2rem] overflow-hidden group cursor-pointer"
-                style={{ background: t.gradient, minHeight: 380 }}
+                style={{ background: gradStyle.gradient, minHeight: 380 }}
                 onClick={() => setVideoModal(t.video)}
               >
                 {/* Decorative circles */}
@@ -496,7 +495,8 @@ export const SummerCamps = () => {
                   </div>
                 </div>
               </motion.div>
-            ))}
+              );
+            })}
           </div>
 
         </div>

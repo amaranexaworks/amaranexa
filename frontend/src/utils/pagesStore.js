@@ -45,12 +45,51 @@ const DEFAULT_PAGES = {
     socialProofHeadline: "30+ schools trust our services for their students",
     contactHeadline: "Ready to Partner?",
     contactSubtitle: "Join the network of schools leading the tech revolution. Let's build the future together.",
+    successStories: [
+      { image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=600&q=80', school: 'Delhi Public School', location: 'Hyderabad', students: '500+', video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
+      { image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80', school: 'Narayana School', location: 'Vizag', students: '350+', video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
+      { image: 'https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=600&q=80', school: 'Sri Chaitanya School', location: 'Chennai', students: '420+', video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
+    ],
+    schoolTestimonials: [
+      { name: 'Dr. Kavitha Reddy', role: 'Principal, DPS Hyderabad', quote: 'Students who once dreaded computer class now stay back after school to work on AI projects.', image: 'https://i.pravatar.cc/150?u=principal1', video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
+      { name: 'Mr. Rajesh Nair', role: 'Coordinator, Narayana Vizag', quote: 'Enrollment inquiries doubled after we showcased the lab at our annual day.', image: 'https://i.pravatar.cc/150?u=principal2', video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
+      { name: 'Mrs. Sunita Iyer', role: 'Director, Sri Chaitanya Chennai', quote: 'Within 10 days we had a fully operational lab. Students built their first robot in Week 2.', image: 'https://i.pravatar.cc/150?u=principal3', video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
+    ],
+    howItWorks: [
+      { emoji: '🤝', title: 'School Partners With Us', desc: 'Your school signs a partnership agreement. We handle everything — hardware specs, curriculum, staffing. No upfront investment needed.' },
+      { emoji: '🏗️', title: 'We Build the Lab', desc: 'Our team installs high-speed fiber, ergonomic workstations, and RTX laptops inside your existing classroom. Lab is live in 7 days.' },
+      { emoji: '🚀', title: 'Students Start Building', desc: 'Professional mentors arrive on Day 1. Students immediately work on real AI and coding projects — no filler, no theory-only classes.' },
+    ],
+    servicesDropdown: [
+      { label: 'National Competitions', desc: 'Inter-school tech fests & robotics challenges' },
+      { label: 'Interactive Quizzes', desc: 'Gamified assessments to track student progress' },
+      { label: 'Tech Exhibitions', desc: 'Grand showcases for students to present projects' },
+    ],
   },
   summerCamps: {
     camps: [
       { id: 1, category: "ROBOTICS", title: "SUMMER CAMP", grades: "2nd to 12th", details: ["3D Design and Modeling", "Sensor Integration", "Electronics and Circuitry"], startDate: "9th March", image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=800&q=80" },
       { id: 2, category: "PYTHON & AI", title: "SUMMER CAMP", grades: "6th to 12th", details: ["Logical Problem Solving", "AI & App Development", "Data Structures"], startDate: "9th March", image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80" },
       { id: 3, category: "GAME DEV", title: "SUMMER CAMP", grades: "4th to 12th", details: ["3D Game Design", "C# Programming", "Level Mechanics"], startDate: "15th March", image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80" },
+    ],
+    campStats: [
+      { value: 5000, suffix: '+', label: 'Students Enrolled' },
+      { value: 98, suffix: '%', label: 'Parent Satisfaction' },
+      { value: 12, suffix: '+', label: 'Camp Tracks' },
+      { value: 6, suffix: '+', label: 'Cities' },
+    ],
+    videoTestimonials: [
+      { name: 'Arjun Sharma', role: 'Student, Grade 9', quote: 'I built my first AI model in just 5 days. This camp changed how I think about technology.', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', thumb: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+      { name: 'Priya Nair', role: 'Parent of Grade 7 Student', quote: 'My daughter came back confident, creative, and with a working robot she built herself. Worth every rupee.', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', thumb: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+      { name: 'Karan Mehta', role: 'Student, Grade 11', quote: 'The Game Dev camp was intense but amazing. I shipped my first Unity game and it is on my portfolio.', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80', thumb: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=600&q=80', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+    ],
+    advantages: [
+      { title: 'Real Projects', desc: 'Students build working apps, robots, and AI models — not just theory.' },
+      { title: 'Expert Mentors', desc: 'Learn from industry professionals with real product experience.' },
+      { title: 'Small Batches', desc: 'Max 15 students per batch for personal attention and fast progress.' },
+      { title: 'Certificates', desc: 'Industry-recognized certificates to boost college applications.' },
+      { title: 'Pan-India Community', desc: 'Join a network of 5000+ young innovators across India.' },
+      { title: 'Career Guidance', desc: 'One-on-one sessions on future tech careers and college prep.' },
     ],
     benefitsTitle: "Why Join Our Summer Camp?",
     benefits: [
@@ -65,6 +104,9 @@ const DEFAULT_PAGES = {
       { id: 2, name: "Michael Chen", role: "Parent of 9th Grader", content: "The Python & AI camp was a game-changer for my daughter. She's now building her own apps and is so excited about computer science.", rating: 5 },
       { id: 3, name: "Emily Davis", role: "Parent of 5th Grader", content: "A wonderful experience! The Game Dev camp was perfectly paced and very engaging. Highly recommend CodeOffice for summer activities.", rating: 5 },
     ],
+  },
+  blog: {
+    categories: ['All Posts', 'Robotics', 'Artificial Intelligence', 'Science', 'Web Development', 'Drone', 'Machine Learning', 'Coding for Kids', 'STEM Education', 'Future of Tech', 'Student Projects'],
   },
 };
 
